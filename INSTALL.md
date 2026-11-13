@@ -8,6 +8,13 @@
 - Node 由 DSH 自带，不需要另装。
 - 本包**不需要** `npm install`；`dist/client.js` 已随仓库提交。
 
+## 0.5 从 GitHub 取包
+
+- 直接下载：<https://github.com/mounta1n-18/dsh-improvements/archive/refs/heads/main.zip>，解压后把目录名 `dsh-improvements-main` 改成 `dsh-improvements`。
+- 或者 `git clone https://github.com/mounta1n-18/dsh-improvements.git`。
+
+仓库里已经带好 `dist/client.js`，解压即用，不需要构建。
+
 ## 1. 放包
 
 把整个 `dsh-improvements` 目录放到一个**不会被升级覆盖**的位置：
