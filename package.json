@@ -1,0 +1,61 @@
+{
+  "name": "dsh-improvements",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "One DeepSeek Harness plugin bundling five focused improvements: destructive-command guard, lazy MCP disclosure, computer-use tools, context usage panel, and session workspace moving.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mounta1n-18/dsh-improvements.git"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "mcp",
+    "context-window",
+    "computer-use",
+    "guardrails"
+  ],
+  "icon": "./icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./dist/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "dist/",
+    "modules/",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "INSTALL.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build-client.mjs",
+    "sync": "node scripts/sync-modules.mjs",
+    "sync:check": "node scripts/sync-modules.mjs --check",
+    "verify": "node scripts/verify.mjs",
+    "test": "node --test tests/"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-chat",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  }
+}

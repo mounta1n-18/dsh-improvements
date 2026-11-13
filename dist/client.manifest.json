@@ -1,0 +1,17 @@
+{
+  "clientId": "dsh-improvements",
+  "modules": [
+    {
+      "dir": "context-usage",
+      "file": "modules\\context-usage\\client.js",
+      "bytes": 40171,
+      "sha256": "d865a2d3790da3f41fcb1bd039bf9f78def29bb3bcc28c97231a8432e1d59447"
+    },
+    {
+      "dir": "mcp-lazy",
+      "file": "modules\\mcp-lazy\\client.js",
+      "bytes": 19709,
+      "sha256": "32c5403a2aebec222bbcffd1fdadd10dc0ec6644b22b4d487ff010fa0f1e8b0a"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "module": "context-usage",
+  "source": "C:\\DSH Plugin\\dsh-context-usage",
+  "upstream": {
+    "name": "@local/dsh-context-usage",
+    "version": "1.0.10"
+  },
+  "syncedAt": "2026-11-13T17:51:48.028Z",
+  "files": {
+    "client.js": "d865a2d3790da3f41fcb1bd039bf9f78def29bb3bcc28c97231a8432e1d59447",
+    "index.js": "0e3dc11ad1f6a59cdd4a7891ae4d8a915cea21d53700d5b402ad16af601616a7",
+    "locale/en.json": "f2aeec54a7354a7a4091d626584f081f8e96693b7ee4607e07eab87d2c2f0424",
+    "locale/zh.json": "4b5089ce47518e0d4aeefbd5bdba034f415263f9c62768642ad78ca5aaf53813"
+  }
+}

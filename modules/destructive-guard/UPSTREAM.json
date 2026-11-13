@@ -1,0 +1,14 @@
+{
+  "module": "destructive-guard",
+  "source": "C:\\DSH Plugin\\dsh-destructive-guard",
+  "upstream": {
+    "name": "@local/dsh-destructive-guard",
+    "version": "1.1.0"
+  },
+  "syncedAt": "2026-11-13T17:51:48.037Z",
+  "files": {
+    "index.js": "8188ce111b52a6ce485c0c549f4beddc5a31a694dce93c9a3d37519547912fc7",
+    "package.json": "dbb1ef99841fab4e8e4f18bf14154ff35c26a4ae04910f46d1f55801795cd8b2",
+    "rules.mjs": "807dba53980602738d3fa0c0ddbbf0933f4048cd2222a1b4d19f94d4aa242a57"
+  }
+}

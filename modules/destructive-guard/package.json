@@ -1,0 +1,24 @@
+{
+  "name": "@local/dsh-destructive-guard",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Blocks irreversible shell commands that target the user home, system roots, disks, backups and logs, and denies write/edit into session logs, memory, credentials and system directories; keeps normal workspace work untouched.",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js",
+    "./rules": "./rules.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "rules.mjs",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

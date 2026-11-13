@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="DSH Improvements">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6A82FF"/>
+      <stop offset="1" stop-color="#3E58E8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <path d="M12 21.5A3.5 3.5 0 0 1 15.5 18h10.2l4.1 5H48.5A3.5 3.5 0 0 1 52 26.5v17A3.5 3.5 0 0 1 48.5 47h-33A3.5 3.5 0 0 1 12 43.5Z" fill="#fff" opacity=".96"/>
+  <path d="M22 33.5h18M35.2 28.7l4.8 4.8-4.8 4.8" fill="none" stroke="#3E58E8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

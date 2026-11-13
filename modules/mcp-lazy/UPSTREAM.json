@@ -1,0 +1,16 @@
+{
+  "module": "mcp-lazy",
+  "source": "C:\\DSH Plugin\\dsh-mcp-lazy",
+  "upstream": {
+    "name": "dsh-mcp-lazy",
+    "version": "0.1.0"
+  },
+  "syncedAt": "2026-11-13T18:03:16.596Z",
+  "files": {
+    "client.js": "32c5403a2aebec222bbcffd1fdadd10dc0ec6644b22b4d487ff010fa0f1e8b0a",
+    "index.js": "9284fe55247ce936060755eb24d7dcace139c4e232525d2bc22349f9f5fa18f4",
+    "lib/router.js": "474de9fce84b9f1dc0a5ded05efb1020b648b0d8e1ed04c6c93c3576fc1de028",
+    "locale/en.json": "4ad832c882e11fc84e4fb3cbb512778037cae213bef05fe6c03a47014d1e9ec4",
+    "locale/zh.json": "7076c4b39767098102cf46978bbed36cbdf26fb0de4f27a3030d43bb1730a4cd"
+  }
+}
