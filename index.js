@@ -15,6 +15,7 @@
 import * as computerUse from './modules/computer-use/index.js'
 import * as contextUsage from './modules/context-usage/index.js'
 import * as destructiveGuard from './modules/destructive-guard/index.js'
+import * as indexAdjust from './modules/index-adjust/index.js'
 import * as mcpLazy from './modules/mcp-lazy/index.js'
 
 /** Cordis 插件身份（Loader 诊断与插件页显示用）。 */
@@ -25,6 +26,7 @@ export const name = 'dsh-improvements'
  */
 const MODULES = [
   { key: 'guard', label: 'destructive-guard', plugin: destructiveGuard },
+  { key: 'indexAdjust', label: 'index-adjust', plugin: indexAdjust },
   { key: 'mcpLazy', label: 'mcp-lazy', plugin: mcpLazy },
   { key: 'computerUse', label: 'computer-use', plugin: computerUse },
   { key: 'contextUsage', label: 'context-usage', plugin: contextUsage },

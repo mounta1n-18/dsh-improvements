@@ -2,6 +2,12 @@
   "clientId": "dsh-improvements",
   "modules": [
     {
+      "dir": "index-adjust",
+      "file": "modules\\index-adjust\\client.js",
+      "bytes": 54670,
+      "sha256": "08e88f49730a70c3890b26598ba0154120c79f0ccd2076ede49195e58ef1d610"
+    },
+    {
       "dir": "context-usage",
       "file": "modules\\context-usage\\client.js",
       "bytes": 40171,

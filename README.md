@@ -1,6 +1,6 @@
 # dsh-improvements
 
-一个 DeepSeek Harness（DSH）插件，内装四个各自收敛的小模块：**破坏性命令护栏**、**MCP 渐进披露**、**桌面操作**、**上下文占用面板**。第五个模块 **会话移库**（index-adjust）等上游修复落地后并入。
+一个 DeepSeek Harness（DSH）插件，内装五个各自收敛的小模块：**破坏性命令护栏**、**会话移库**、**MCP 渐进披露**、**桌面操作**、**上下文占用面板**。
 
 对外只有**一个插件、一个包、一行配置**；升级、卸载、开关都只动这一处。
 
@@ -14,7 +14,7 @@
 | `mcp-lazy` | MCP 工具默认不全部塞进上下文，按需 `mcp(load)`；设置页有每个服务器的简介、工具数、披露开关 | Host + Client | `mcpLazy: false` |
 | `computer-use` | `computer_use` / `browser_use` 工具：截屏、点按、输入、开应用；必须 `activate` 才动键鼠，带急停 | Host + Python | `computerUse: false` |
 | `context-usage` | 作曲器「上下文用量」按钮、占用面板、`/context` 命令、余额药丸 | Client | `contextUsage: false` |
-| `index-adjust`（待并入） | 会话右键「更改工作区 / 重连工作区」 | Host + Client | 尚未接入 |
+| `index-adjust` | 会话右键「更改工作区 / 重连工作区」；只对 DSH 0.2.2-rc.3 开放，版本不符时返回 503 且不动会话 | Host + Client | `indexAdjust: false` |
 
 每个模块的构造、依赖、改造点与风险，见 `modules/<name>/NOTES.md`。
 
@@ -34,7 +34,7 @@
 - **护栏不是沙箱。** 它只审 `pwsh`/`bash`/`terminal`/`shell`/`cmd` 的 `command`，以及 `write`/`edit`/`apply_patch`/`str_replace_editor` 的目标路径；脚本内容、`run_code`、GUI 打字都不在范围内。
 - **完全权限下没有文件沙箱。** 官方 `danger-full-access` 预设 = 关沙箱 + 审批 `never`；此时护栏的 `ask` 级规则会被确定性拒绝（1.1.0 起会显式降级为 `deny` 并写清原因），而不是弹确认。
 - `computer-use` 默认开启，会操作真实桌面。用 `activate` 授权、`Ctrl+Shift+Alt` 暂停、`Ctrl+Alt+Shift+Backspace` 急停。
-- `index-adjust` 会改写会话存储，未完成版本探测前不并入；届时也建议先在副本会话上试。
+- `index-adjust` 会改写会话存储：启动时探测 DSH 版本与私有字段，任一项不符就整组操作返回 503，不动任何会话文件；移动成功后备份保留在 `~/.dsh/.dsh-index-adjust-backups`，由你确认正常后手动删除。
 
 ## 目录
 
@@ -62,6 +62,6 @@ npm run verify        # 自检：入口、client 合并、哈希
 ## 来源与许可
 
 - MIT，见 [LICENSE](LICENSE)。
-- 四个模块来自作者自己的独立插件会话，版权归 mounta1n-18。
+- 五个模块来自作者自己的独立插件会话，版权归 mounta1n-18。
 - `modules/computer-use/assets/whale.png` 取自 DeepSeek Harness 官方应用图标，版权归 DeepSeek，仅用于标识「这是 DSH 的桌面操作」，不随 MIT 授权。
 - 图标 `icon.svg` 沿用原 `dsh-index-adjust` 的图形，仅作本包标识。

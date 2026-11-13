@@ -24,6 +24,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 
 /** 有 Client 半身的模块，按页面挂载顺序排列。 */
 const CLIENT_MODULES = [
+  { dir: 'index-adjust', inject: ['slots', 'locale', 'contextMenus', 'workspaces', 'sessions', 'uiWorkspace'] },
   { dir: 'context-usage', inject: ['slots', 'locale', 'commandUi'] },
   { dir: 'mcp-lazy', inject: ['slots', 'locale'] },
 ]

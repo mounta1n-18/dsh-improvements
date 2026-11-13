@@ -9,6 +9,10 @@
         # 破坏性命令护栏（Host）。false 关闭；也可用环境变量 DSH_GUARD=off。
         guard: true
 
+        # 会话跨工作区移动 / 目录改名后重连（Host + 右键菜单）。
+        # 只对 DSH 0.2.2-rc.3 开放；版本或私有接口不符时整组操作返回 503，不动会话文件。
+        indexAdjust: true
+
         # MCP 渐进披露（Host + 设置页）。
         # stateFile 记录"上次看到的服务器"，用于识别配置被整文件重写的情况。
         mcpLazy:

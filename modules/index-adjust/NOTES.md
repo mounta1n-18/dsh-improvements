@@ -1,38 +1,55 @@
-# index-adjust（尚未并入）
+# index-adjust
 
-会话移库：右键会话「更改工作区」「重连工作区」。源包：`C:\DSH Plugin\dsh-index-adjust`（MIT，Host + Client）。
+会话移库：右键会话「更改工作区」「重连工作区」。源包 `C:\DSH Plugin\dsh-index-adjust`（v1.1.0，MIT，Host + Client）。
 
-## 为什么不在这版里
+## 构造
 
-它直接改写 DSH 的会话存储与工作区注册表：
+**Host**（`index.js`）
 
-- 读 `SessionPersistence` 的全部事件；
-- 旧会话目录移到 `~/.dsh/.dsh-index-adjust-backups`；
-- 以新 header 重建会话日志、写事件并校验；
-- 重建 `sessionProjectionCache`；
-- 改 `WorkspaceRegistry` 的 `registry.headers` / `sessionPaths`，再 detach/attach；
-- 成功后删备份，失败回滚。
+- 导出 `name = 'index-adjust'`、`inject = ['workspaceRegistry', 'sessionPersistence', 'agents']`；
+- `apply(ctx)` 内部再 `ctx.inject(['webServer'], ...)`，注册三条只回环可用的路由：
+  - `GET /dsh-index-adjust/state?sessionId=…`：读会话头、原目录是否存在、候选目录、`compat`；
+  - `POST /dsh-index-adjust/move`：移动；
+  - `POST /dsh-index-adjust/reconnect`：目录改名后重连。
+- 所有路由要求 `x-dsh-index-adjust: 1`，并校验 `remoteAddress` 是本机；跨站简单请求带不上这个头。
+- 移动是一个全局串行队列里的操作：探测版本/私有字段 → 预检 → 释放空闲会话写句柄 → 旧目录进 `~/.dsh/.dsh-index-adjust-backups` → `sessionPersistence.create` 重建日志 → 写事件 → 重开会话校验（头、事件数、最后一条）→ 重建 `sessionProjectionCache` → 更新 `workspaceRegistry.headers`/`sessionPaths` → detach/attach。
+- 同一会话另有一把互斥锁，防止并发移动。
 
-其中 `registry.headers`、`sessionPaths`、`sessionProjectionCache` 都是**未公开的进程内字段**，DSH 升级即可能变化。写坏的是会话本身，不是插件自己，所以等上游把防护补齐再并入。
+**Client**（`client.js`）
 
-## 上游正在补的防护
+- 往 `contextMenus` 注册两项（会话右键），文案内联 zh/en，不读 locale 文件；
+- 弹窗注册在 `shell.overlay`，自带轻量 store（`hooks.adjust`），只调三条路由；
+- 只使用宿主 CSS token，跟随明暗主题；
+- 声明 `inject: ['slots', 'locale', 'contextMenus', 'workspaces', 'sessions', 'uiWorkspace']`。
 
-1. 启动时探测 DSH 版本与私有字段，缺失就禁用移动并在 UI 说明，绝不半途改；
-2. 移动前预检（事件可读、目标目录可写、目标 workspace 存在），失败原样退出；
-3. 备份保留到用户确认成功（或保留 N 天），失败时给恢复命令；
-4. 写后重开会话校验消息数/最后事件，校验失败自动回滚；
-5. 同一会话的移动加互斥锁；
-6. 修 README 里过时的安装路径。
+## 并入改造
 
-## 并入时要做什么
+**模块代码零改动**，只在装配层接线：
 
-- 把源包的 `index.js`、`client.js`、`locale/` 同步进 `modules/index-adjust/`；
-- 在 `scripts/build-client.mjs` 的 `CLIENT_MODULES` 里加 `index-adjust`（它的 Client 有右键菜单与对话框）；
-- 在根 `index.js` 的 `MODULES` 里加一项，键名 `indexAdjust`，依赖 `['workspaceController', 'sessions', 'webServer']` 之类，按源包实际声明的注入来；
-- 在 `cordis.patch.yml` 里加 `indexAdjust: true`（或默认 false，让用户显式开）；
-- 在 `scripts/sync-modules.mjs` 里去掉 `pending: true`；
-- 验收：复制一个会话 → 移到另一个工作区 → 重开 DSH → 消息、附件、标题、时间线都在；再故意让目标目录不可写，确认原样回滚。
+- `scripts/build-client.mjs` 的 `CLIENT_MODULES` 加 `index-adjust`；
+- 根 `index.js` 的 `MODULES` 加 `indexAdjust`，依赖自动取自模块导出的 `inject`；
+- `package.json` 的 `dsh.client.inject` 增加 `dsh-client-locale`、`dsh-client-ui-context-menu`、`dsh-client-ui-workspace`；
+- `cordis.patch.yml` 加 `indexAdjust: true`；
+- `scripts/sync-modules.mjs` 的 include 为 `index.js`、`client.js`、`icon.svg`（没有 locale 目录）。
+
+## 1.1.0 相比旧版的防护
+
+- 版本探测：只认 `0.2.2-rc.3`，并逐项探测私有字段（`workspaceRegistry` 的头/路径缓存、`sessionPersistence.tracker.writers`、`sessionProjectionCache.coldSnapshot` 等）；任一缺失返回 503，UI 显示「当前 DSH 版本不支持」，不落盘。
+- 预检：原日志可读、目标工作区存在、目标目录可写，失败原样退出。
+- 备份：成功后**不再自动删除**，响应返回 `backupDir` 与 PowerShell 恢复命令；失败时也保留。
+- 写后校验：重新打开新会话，核对头、事件数、最后事件；失败自动回滚。
+- 并发：全局串行队列 + 每会话锁。
+- README 安装路径已改成 `C:\DSH Plugin\dsh-index-adjust`。
 
 ## 风险
 
-- 最高。宁可少一个功能，也不要丢一个会话。默认值建议先 `false`，等愿意承担风险的用户显式打开。
+- 与 DSH 版本强绑定：升级到 rc.3 之后的新版，移动/重连会自动禁用，直到重新验证并更新 `SUPPORTED_DSH_VERSION`。
+- 仍依赖未公开的 `headers` / `sessionPaths` / `projectionCache` 字段；探测能挡住字段消失，挡不住语义变化。
+- 备份要手动删；建议确认新会话能正常续聊后再清。
+
+## 验证
+
+1. `node --check index.js`、`node --check client.js`；
+2. 冷启动后 `GET /dsh-index-adjust/state` 带 `x-dsh-index-adjust: 1`，`compat.supported` 为 true；
+3. 复制一个会话到另一个工作区，重开 DSH 看历史、标题、时间线；
+4. 故意让目标目录不可写，确认原样回滚且备份还在。

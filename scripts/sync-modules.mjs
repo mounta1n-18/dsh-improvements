@@ -45,8 +45,7 @@ const MODULES = {
   },
   'index-adjust': {
     source: 'dsh-index-adjust',
-    include: ['index.js', 'client.js', 'locale', 'icon.svg'],
-    pending: true,
+    include: ['index.js', 'client.js', 'icon.svg'],
   },
 }
 

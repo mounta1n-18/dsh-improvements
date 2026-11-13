@@ -57,6 +57,7 @@ if (existsSync(clientFile)) {
   check((client.match(/__ModuleLoader__\.load\(/g) || []).length === 1, 'client bundle 只有一个 ModuleLoader 入口')
   check(client.includes("NS = 'context-usage'"), 'client bundle 含 context-usage')
   check(client.includes("'mcpLazy'"), 'client bundle 含 mcp-lazy')
+  check(client.includes("id: 'index-adjust.dialog'"), 'client bundle 含 index-adjust')
 }
 
 const manifestFile = join(ROOT, 'dist', 'client.manifest.json')
@@ -70,7 +71,7 @@ if (existsSync(manifestFile)) {
   }
 }
 
-const moduleDirs = ['context-usage', 'mcp-lazy', 'destructive-guard', 'computer-use']
+const moduleDirs = ['context-usage', 'mcp-lazy', 'destructive-guard', 'computer-use', 'index-adjust']
 for (const dir of moduleDirs) {
   const upstreamFile = join(ROOT, 'modules', dir, 'UPSTREAM.json')
   check(existsSync(upstreamFile), `${dir} 有 UPSTREAM.json`)

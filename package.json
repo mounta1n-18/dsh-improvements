@@ -1,6 +1,6 @@
 {
   "name": "dsh-improvements",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "One DeepSeek Harness plugin bundling five focused improvements: destructive-command guard, lazy MCP disclosure, computer-use tools, context usage panel, and session workspace moving.",
   "license": "MIT",
@@ -54,7 +54,10 @@
       "immediately": true,
       "inject": [
         "@deepseek-ai/dsh-client-ui-chat",
-        "@deepseek-ai/dsh-client-ui-settings"
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-context-menu",
+        "@deepseek-ai/dsh-client-ui-workspace"
       ]
     }
   }

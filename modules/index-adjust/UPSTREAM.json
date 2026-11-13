@@ -1,0 +1,14 @@
+{
+  "module": "index-adjust",
+  "source": "C:\\DSH Plugin\\dsh-index-adjust",
+  "upstream": {
+    "name": "@local/dsh-index-adjust",
+    "version": "1.1.0"
+  },
+  "syncedAt": "2026-11-13T18:16:10.027Z",
+  "files": {
+    "client.js": "08e88f49730a70c3890b26598ba0154120c79f0ccd2076ede49195e58ef1d610",
+    "icon.svg": "330539ee5527dd6aed5a64f342af8a9f4d5d503d337e96465b1759fbdda42be1",
+    "index.js": "8c952de7480793b3ea94ebddc9b588daffdd46cbce8ea3b07bae9ff36cc9529c"
+  }
+}

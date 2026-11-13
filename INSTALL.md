@@ -59,7 +59,7 @@
 dsh plugin --profile <profile> install
 ```
 
-看到 `+ dsh-improvements 0.1.0 <- <你的路径>` 即成功。
+看到 `+ dsh-improvements <版本> <- <你的路径>` 即成功。
 
 > 如果 DSH 当前是「工作区内修改」权限，写 `~/.dsh/profiles` 会被沙箱挡住。两种办法：
 > 1. 在 GUI 里用「安装插件」的入口点装（会走一次审批）；
@@ -76,8 +76,9 @@ dsh plugin --profile <profile> install
 3. **作曲器**：输入框上方/右侧出现「上下文用量」按钮；`/context` 能打开面板。
 4. **护栏**：让 agent 跑一条 `Remove-Item -Recurse -Force $HOME\.dsh\sessions`，应当被拒，理由里带 `[dsh-guard:FS-HOME]`。
 5. **桌面操作**：问 agent「你有哪些 computer_use 工具」，应能列出；第一次动键鼠会弹授权横幅。
+6. **会话移库**：右键任意会话，应出现「更改工作区」「重连工作区」；打开弹窗时 `GET /dsh-index-adjust/state?sessionId=…`（带 `x-dsh-index-adjust: 1`）返回 `compat.supported: true`。如果 DSH 不是 0.2.2-rc.3，按钮仍在但操作会返回 503 并显示「当前 DSH 版本不支持」——这是有意的版本锁。
 
-以上 5 项过 4 项即可用；护栏和 MCP 页是最关键的两项。
+以上 6 项过 5 项即可用；护栏、MCP 页、会话移库是最关键的三项。
 
 ## 5. 关掉某个模块
 
@@ -89,6 +90,7 @@ dsh plugin --profile <profile> install
       name: dsh-improvements
       config:
         guard: false
+        indexAdjust: true
         mcpLazy: true
         computerUse: false
         contextUsage: true
