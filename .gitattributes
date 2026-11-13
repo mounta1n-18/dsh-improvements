@@ -1,6 +1,2 @@
-* text=auto eol=lf
-*.ps1 text eol=crlf
-*.png binary
-*.jpg binary
-*.ico binary
-*.tgz binary
+# 模块源码按字节保真：不做换行转换，克隆出来与 UPSTREAM.json 记录的哈希一致。
+* -text
