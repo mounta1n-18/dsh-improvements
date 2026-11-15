@@ -18,6 +18,13 @@
 
 每个模块的构造、依赖、改造点与风险，见 `modules/<name>/NOTES.md`。
 
+各模块也可以单独安装，源仓库分别是：
+[destructive-guard](https://github.com/mounta1n-18/dsh-destructive-guard)、
+[mcp-lazy](https://github.com/mounta1n-18/dsh-mcp-lazy)、
+[computer-use](https://github.com/mounta1n-18/dsh-computer-use)、
+[context-usage](https://github.com/mounta1n-18/dsh-context-usage)、
+[index-adjust](https://github.com/mounta1n-18/dsh-index-adjust)。
+
 ## 运行条件（条件收敛）
 
 同一个文件夹搬到另一台机器，满足下面的条件就能用；缺哪项只影响对应模块：
