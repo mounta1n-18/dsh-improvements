@@ -5,7 +5,7 @@
     "name": "@local/dsh-computer-use",
     "version": "1.0.0"
   },
-  "syncedAt": "2026-11-15T09:17:37.430Z",
+  "syncedAt": "2026-11-15T09:36:25.159Z",
   "files": {
     "assets/whale.png": "12064ff340e65872715cb18e56cfa9d3afe294fed98c81807d39e230a030d972",
     "index.js": "3944b4353e0208dd1671f326d529bfbc4d25145a530f968e0ba5dfaa481dfa7f",
@@ -14,7 +14,7 @@
     "lib/cdp/dom.mjs": "4c7170b40e1240fab120a5998a3e8a1c6a750169d176f2d977a5b50f5c53f5e3",
     "lib/cdp/extra.mjs": "11c0b16200567932b0b627b8f6f80cb7bd80aadcd755a765cbeb8533bf78ccf5",
     "lib/cdp/index.mjs": "6783365ee25d986d4e060cdc0f8a8a02c7e00f2756182c25bd1373562e701066",
-    "lib/cdp/selftest.mjs": "b34fcae455706460bf6d36f0cabdb008a3d8d2ea9a485da8f3a506d789189d18",
+    "lib/cdp/selftest.mjs": "d00a34b4acf87a3973528b54bd1ba87a043a57a8c4a2d95bbd9676627a5e51ec",
     "lib/cdp/session.mjs": "763d8ba1cf8b8557f0600a1a000344aea2f1dcf2af9a4a9eb3c41f0466572127",
     "lib/cdp/targets.mjs": "9e5636a5eb0f4c95a30e0984ac6af49e147ac7a3b64aab8a4546806287fa3ecb",
     "lib/computer-use.mjs": "f29711d2e3c22f629aaab0446628586e1489474ef6aa69a5b7333c5bcc195b0f",
