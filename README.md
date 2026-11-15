@@ -1,6 +1,6 @@
 # dsh-improvements
 
-一个 DeepSeek Harness（DSH）插件，内装五个各自收敛的小模块：**破坏性命令护栏**、**会话移库**、**MCP 渐进披露**、**桌面操作**、**上下文占用面板**。
+一个 DeepSeek Harness（DSH）插件，内装五个各自独立的小模块：**破坏性命令护栏**、**会话移库**、**MCP 渐进披露**、**桌面操作**、**上下文占用面板**。
 
 对外只有**一个插件、一个包、一行配置**；升级、卸载、开关都只动这一处。
 
@@ -25,7 +25,7 @@
 [context-usage](https://github.com/mounta1n-18/dsh-context-usage)、
 [index-adjust](https://github.com/mounta1n-18/dsh-index-adjust)。
 
-## 运行条件（条件收敛）
+## 运行条件
 
 同一个文件夹搬到另一台机器，满足下面的条件就能用；缺哪项只影响对应模块：
 
@@ -34,7 +34,7 @@
 - **Python 3.10+ 与 Pillow**：`computer-use` 的常驻服务；`python -m pip install pillow`。
 - **Chrome**：`browser_use` 的 CDP 平面；没有它桌面操作仍可用。
 
-完整清单与自检命令见 [INSTALL.md](INSTALL.md#01-运行条件条件收敛)。
+完整清单与自检命令见 [INSTALL.md](INSTALL.md#01-运行条件)。
 
 
 ## 安装

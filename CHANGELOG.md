@@ -15,7 +15,7 @@
 
 - 合并 client 扩到 126249B，三个浏览器模块（index-adjust / context-usage / mcp-lazy）仍共用一个 `ModuleLoader` 入口，各自 `apply` 独立 try/catch。
 - `sync-modules.mjs` 在上游无变化时不再重写 `UPSTREAM.json`，减少无意义 diff。
-- README / INSTALL 增加「条件收敛」依赖清单：DSH 版本、Windows、Python + Pillow、Chrome，以及缺项时哪个模块降级。
+- README / INSTALL 增加运行条件与依赖清单：DSH 版本、Windows、Python + Pillow、Chrome，以及缺项时哪个模块降级。
 
 ### 已知问题
 
