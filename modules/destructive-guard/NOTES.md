@@ -27,3 +27,8 @@
 ## 验证
 
 `POST /dsh-destructive-guard/check` 传 `Remove-Item -Recurse -Force C:\Users\<你>\.dsh\sessions`，应返回 `verdict: "block"`、`rule: "FS-HOME"`。
+
+## 2026-11-15 上游更新
+
+- 本轮无变化，仍 1.1.0；`ask` 在 `approval=never` 下显式降级为 `deny` 的逻辑已包含在 0.1.0。
+

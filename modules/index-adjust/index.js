@@ -27,7 +27,7 @@
 import { cp, mkdir, readFile, readdir, realpath, rename, rm, stat, unlink, writeFile } from 'node:fs/promises'
 import { join, parse, dirname } from 'node:path'
 
-/** Cordis plugin name used by Loader diagnostics. */
+/** Cordis plugin name used by Loader logs. */
 export const name = 'index-adjust'
 
 /** Host services this plugin needs. */

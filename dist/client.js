@@ -137,23 +137,30 @@ window.__ModuleLoader__.load({
 .dshia-cardTitle{font-size:12px;line-height:18px;font-weight:600}
 .dshia-cardPath{font-size:11px;line-height:17px;color:var(--dsw-alias-label-secondary,#6b7280);word-break:break-all;margin-top:2px}
 .dshia-empty{font-size:12px;line-height:19px;color:var(--dsw-alias-label-secondary,#6b7280);padding:12px 2px}
-.dshia-folder-dot-layer{position:fixed;inset:0;z-index:20;overflow:hidden;pointer-events:none}
-.dshia-folder-dots{display:inline-flex;align-items:center;gap:2px;flex:none;margin-left:3px;pointer-events:none;vertical-align:middle}
-.dshia-folder-dots-floating{position:absolute;display:flex;margin:0;transform:translateY(-50%)}
-.dshia-folder-dot{position:relative;display:inline-block;flex:none;width:10px;height:10px;color:var(--dsw-alias-state-idle-primary)}
-.dshia-folder-dot::after{content:"";position:absolute;inset:20%;border-radius:50%;corner-shape:round;background:currentColor}
-.dshia-folder-dot[data-state="done"]{color:var(--dsw-alias-state-success-primary)}
-.dshia-folder-dot[data-state="warning"]{color:var(--dsw-alias-state-warn-primary)}
-.dshia-folder-dot[data-state="error"]{color:var(--dsw-alias-state-error-primary)}
-.dshia-folder-dot[data-state="idle"]{color:var(--dsw-alias-state-idle-primary)}
-.dshia-folder-spinner{flex:none;color:var(--dsw-alias-label-tertiary)}
-.dshia-folder-spinner-motion{transform-origin:center;animation:dshia-folder-spin 1.5s linear infinite}
-.dshia-folder-spinner-track,.dshia-folder-spinner-arc{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-.dshia-folder-spinner-track{opacity:.25}
-.dshia-folder-spinner-arc{stroke-dasharray:12 150;animation:dshia-folder-dash 1.5s ease-in-out infinite}
-@keyframes dshia-folder-spin{to{transform:rotate(360deg)}}
-@keyframes dshia-folder-dash{0%{stroke-dasharray:12 150;stroke-dashoffset:0}50%{stroke-dasharray:24 150;stroke-dashoffset:-6}to{stroke-dasharray:12 150;stroke-dashoffset:0}}
-@media (prefers-reduced-motion:reduce){.dshia-folder-spinner-motion,.dshia-folder-spinner-arc{animation:none}.dshia-folder-spinner-arc{stroke-dasharray:18 150;stroke-dashoffset:-3}}
+[data-row-key^="workspace:"]{position:relative}
+.dshia-folder-badges{position:absolute;display:inline-flex;align-items:center;gap:2px;white-space:nowrap;pointer-events:none;z-index:2}
+.dshia-folder-ball{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;aspect-ratio:1/1;box-sizing:border-box;border-radius:999px;corner-shape:round;font-size:9px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--dsw-specific-sidebar-fill,#fff)}
+.dshia-folder-ball--solo{width:7px;height:7px}
+.dshia-folder-pill{display:inline-flex;align-items:center;justify-content:center;height:13px;min-width:20px;padding:0 5px;box-sizing:border-box;border-radius:999px;font-size:9px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--dsw-specific-sidebar-fill,#fff)}
+.dshia-folder-ball[data-state="done"],.dshia-folder-pill[data-state="done"]{background:var(--dsw-alias-state-success-primary,#1a9b63)}
+.dshia-folder-ball[data-state="warning"],.dshia-folder-pill[data-state="warning"]{background:var(--dsw-alias-state-warn-primary,#c98a00)}
+.dshia-folder-ball[data-state="error"],.dshia-folder-pill[data-state="error"]{background:var(--dsw-alias-state-error-primary,#d33)}
+.dshia-folder-capsule{display:inline-flex;align-items:stretch;height:14px;box-sizing:border-box;border-radius:999px;overflow:hidden;box-shadow:0 0 0 1px var(--dsw-specific-sidebar-fill,transparent)}
+.dshia-folder-capsulePart{display:inline-flex;align-items:center;justify-content:center;min-width:22px;padding:0 8px;box-sizing:border-box;font-size:9px;font-weight:600;line-height:1;letter-spacing:.2px;font-variant-numeric:tabular-nums;color:var(--dsw-specific-sidebar-fill,#fff)}
+.dshia-folder-capsule[data-parts="3"] .dshia-folder-capsulePart{min-width:25px;padding:0 9px}
+.dshia-folder-capsulePart + .dshia-folder-capsulePart{box-shadow:inset 1px 0 0 color-mix(in srgb,var(--dsw-specific-sidebar-fill,#fff) 35%,transparent)}
+.dshia-folder-capsulePart[data-state="done"]{background:var(--dsw-alias-state-success-primary,#1a9b63)}
+.dshia-folder-capsulePart[data-state="warning"]{background:var(--dsw-alias-state-warn-primary,#c98a00)}
+.dshia-folder-capsulePart[data-state="error"]{background:var(--dsw-alias-state-error-primary,#d33)}
+.dshia-folder-spinner{flex:none;width:14px;height:14px;margin-left:4px;margin-right:4px;color:var(--dsw-alias-label-tertiary,#81858c)}
+.dshia-folder-spinner svg{display:block;width:14px;height:14px}
+.dshia-folder-spinnerMotion{transform-origin:center;animation:dshia-state-dot-spin 1.5s linear infinite}
+.dshia-folder-spinnerTrack,.dshia-folder-spinnerArc{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.dshia-folder-spinnerTrack{opacity:.25}
+.dshia-folder-spinnerArc{stroke-dasharray:12 150;animation:dshia-state-dot-dash 1.5s ease-in-out infinite}
+@keyframes dshia-state-dot-spin{to{transform:rotate(360deg)}}
+@keyframes dshia-state-dot-dash{0%{stroke-dasharray:12 150;stroke-dashoffset:0}50%{stroke-dasharray:24 150;stroke-dashoffset:-6}to{stroke-dasharray:12 150;stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.dshia-folder-spinnerMotion,.dshia-folder-spinnerArc{animation:none}.dshia-folder-spinnerArc{stroke-dasharray:18 150;stroke-dashoffset:-3}}
 .dshia-spinner{width:15px;height:15px;border:2px solid var(--dsw-alias-border-l2,rgba(0,0,0,.12));border-top-color:var(--dsw-alias-brand-primary,#4d6bfe);border-radius:50%;animation:dshia-spin .75s linear infinite;display:inline-block;vertical-align:-3px;margin-right:7px}
 .dshia-loading{font-size:12px;line-height:19px;color:var(--dsw-alias-label-secondary,#6b7280);padding:10px 2px}
 .dshia-footer{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 20px 18px;border-top:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.06))}
@@ -319,7 +326,7 @@ window.__ModuleLoader__.load({
 
     /** @param {any} statuses @param {string} sessionId */
     function statusFor(statuses, sessionId) {
-      if (statuses instanceof Map) return statuses.get(sessionId)
+      if (statuses !== null && typeof statuses?.get === 'function') return statuses.get(sessionId)
       return statuses?.[sessionId]
     }
 
@@ -342,44 +349,63 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * Recreate the native StateDot: a 10px box whose ::after paints a 6px dot,
-     * or the native 14px spinner for `ongoing`. Colors come from the same DSH
-     * state tokens; no plugin-specific palette is introduced.
-     * @param {string} state @param {string} title
+     * Mobile-app badge: a solid state-colored ball overlapping the folder
+     * icon. The number is knocked out in the sidebar fill color. A single
+     * session is a plain ball; 2–9 show a digit; 10+ becomes a pill.
+     * @param {string} state
+     * @param {number} count
+     * @param {string} title
+     * @param {boolean} solo
+     * @returns {HTMLSpanElement}
      */
-    function createFolderStatusDot(state, title) {
-      if (state === 'ongoing') {
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 24 24')
-        svg.setAttribute('width', '14')
-        svg.setAttribute('height', '14')
-        svg.setAttribute('aria-hidden', 'true')
-        svg.setAttribute('data-state', 'ongoing')
-        svg.classList.add('dshia-folder-spinner')
-        const motion = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-        motion.classList.add('dshia-folder-spinner-motion')
-        const track = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        track.setAttribute('cx', '12')
-        track.setAttribute('cy', '12')
-        track.setAttribute('r', '9.5')
-        track.classList.add('dshia-folder-spinner-track')
-        const arc = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        arc.setAttribute('cx', '12')
-        arc.setAttribute('cy', '12')
-        arc.setAttribute('r', '9.5')
-        arc.classList.add('dshia-folder-spinner-arc')
-        motion.append(track, arc)
-        svg.append(motion)
-        svg.append(document.createElementNS('http://www.w3.org/2000/svg', 'title'))
-        svg.querySelector('title').textContent = title
-        return svg
+    function createFolderBadge(state, count, title, solo = false) {
+      const span = document.createElement('span')
+      span.className = count >= 10
+        ? 'dshia-folder-pill'
+        : `dshia-folder-ball${solo ? ' dshia-folder-ball--solo' : ''}`
+      span.dataset.state = state
+      span.title = title
+      span.setAttribute('aria-hidden', 'true')
+      if (count > 1) span.textContent = String(count)
+      return span
+    }
+
+    /**
+     * Two or more state colors are merged into one capsule so they read as a
+     * single notification badge. Each segment keeps its own native color and
+     * count; with two states this is the requested left/right halved pill.
+     * @param {{state: string, count: number}[]} entries
+     * @param {string} title
+     * @returns {HTMLSpanElement}
+     */
+    function createFolderCapsule(entries, title) {
+      const capsule = document.createElement('span')
+      capsule.className = 'dshia-folder-capsule'
+      capsule.dataset.parts = String(entries.length)
+      capsule.title = title
+      capsule.setAttribute('aria-hidden', 'true')
+      for (const entry of entries) {
+        const part = document.createElement('span')
+        part.className = 'dshia-folder-capsulePart'
+        part.dataset.state = entry.state
+        part.textContent = String(entry.count)
+        part.title = title
+        capsule.appendChild(part)
       }
-      const dot = document.createElement('span')
-      dot.className = 'dshia-folder-dot'
-      dot.dataset.state = state
-      dot.title = title
-      dot.setAttribute('aria-hidden', 'true')
-      return dot
+      return capsule
+    }
+
+    /**
+     * The animated running indicator is a real SVG element because SVG
+     * animations do not run inside a background image.
+     * @returns {HTMLSpanElement}
+     */
+    function createFolderSpinner() {
+      const span = document.createElement('span')
+      span.className = 'dshia-folder-spinner'
+      span.setAttribute('aria-hidden', 'true')
+      span.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" data-state="ongoing"><g class="dshia-folder-spinnerMotion"><circle class="dshia-folder-spinnerTrack" cx="12" cy="12" r="9.5"></circle><circle class="dshia-folder-spinnerArc" cx="12" cy="12" r="9.5"></circle></g></svg>'
+      return span
     }
 
     /**
@@ -1010,33 +1036,45 @@ window.__ModuleLoader__.load({
       }
 
       /**
-       * The sidebar has no folder-header slot, so paint aggregate dots into a
-       * body-level overlay aligned to each collapsed project row. The component
-       * intentionally renders nothing; it observes the sidebar DOM and its own
-       * reading hooks. Collapsed parents include their whole path-derived
-       * subtree, because DSH hides both child groups and their sessions while
-       * the parent is folded.
+       * The sidebar has no folder-header slot. Mount each aggregate directly
+       * in its collapsed workspace row so the browser scrolls and fades it
+       * with the row. The node is absolutely positioned and cannot affect the
+       * scroller's layout; a MutationObserver restores it if React reconciles
+       * the row's children. Collapsed parents include their path-derived
+       * subtree because DSH hides child groups too.
        */
-      function FolderStatusDots({ useWorkspaces, useSessions, useSessionStatus }) {
+      function FolderStatusDots({ useWorkspaces, useSessionStatus }) {
         const workspaceSnapshot = useWorkspaces((snapshot) => snapshot)
-        const sessionSnapshot = useSessions((snapshot) => snapshot)
         const statuses = useSessionStatus((snapshot) => snapshot)
         const items = Array.isArray(workspaceSnapshot)
           ? workspaceSnapshot
           : workspaceSnapshot?.items ?? []
-        const byId = sessionSnapshot?.byId ?? {}
         const dataRef = React.useRef(null)
-        const layerRef = React.useRef(null)
-        dataRef.current = { items, byId, statuses }
+        dataRef.current = { items, statuses }
+        const groupsRef = React.useRef(new Map())
+        const rememberedStatuses = React.useRef(new Map())
+        const frameRef = React.useRef(0)
 
         const decorate = React.useCallback(() => {
+          if (typeof document === 'undefined') return
+
           const data = dataRef.current
-          if (data === null || typeof document === 'undefined' || document.body === null) return
+          // Collapsing a Workspace may briefly drop its rows from the status
+          // snapshot. Remember the last value per Session so its aggregate
+          // survives that transition instead of blinking out.
+          if (data.statuses !== null && typeof data.statuses?.forEach === 'function') {
+            data.statuses.forEach((value, id) => {
+              if (value !== undefined) rememberedStatuses.current.set(id, value)
+            })
+          } else if (data.statuses !== null && typeof data.statuses === 'object') {
+            for (const [id, value] of Object.entries(data.statuses)) {
+              if (value !== undefined) rememberedStatuses.current.set(id, value)
+            }
+          }
           const workspaceById = new Map(
             data.items.map((workspace) => [workspace.workspaceId, workspace]),
           )
           const forest = buildWorkspaceForest(data.items)
-
           const collectSessions = (workspace, output, seen) => {
             if (workspace === undefined) return
             for (const id of workspaceSessionIds(workspace)) {
@@ -1049,139 +1087,205 @@ window.__ModuleLoader__.load({
             }
           }
 
-          let layer = layerRef.current
-          if (layer === null || !layer.isConnected) {
-            layer = document.createElement('div')
-            layer.className = 'dshia-folder-dot-layer'
-            layer.setAttribute('aria-hidden', 'true')
-            document.body.appendChild(layer)
-            layerRef.current = layer
-          }
-
-          // Older builds painted into the React-managed row; remove those nodes
-          // so a reload cannot leave duplicate dots behind.
-          for (const node of document.querySelectorAll('.wnFoaW_projectRow > .dshia-folder-dots')) {
-            node.remove()
-          }
-
-          const existing = new Map()
-          for (const node of layer.children) {
-            if (!node.classList.contains('dshia-folder-dots')) continue
-            const key = node.dataset.workspaceKey
-            if (key !== undefined) existing.set(key, node)
-          }
-          const keep = new Set()
-          let cursor = layer.firstElementChild
-
+          const rows = new Map()
           for (const row of document.querySelectorAll('[data-row-key^="workspace:"]')) {
-            if (row.getAttribute('aria-expanded') !== 'false') continue
             const key = row.getAttribute('data-row-key') ?? ''
-            const workspace = workspaceById.get(key.slice('workspace:'.length))
-            if (workspace === undefined) continue
+            rows.set(key.slice('workspace:'.length), row)
+          }
 
+          const next = new Map()
+          for (const [workspaceId, row] of rows) {
+            const workspace = workspaceById.get(workspaceId)
+            const old = groupsRef.current.get(workspaceId)
+            const oldBadges = old?.badges ?? null
+            const oldSpinner = old?.spinner ?? null
+            if (workspace === undefined || row.getAttribute('aria-expanded') !== 'false') {
+              oldBadges?.remove()
+              oldSpinner?.remove()
+              continue
+            }
             const sessionIds = []
             collectSessions(workspace, sessionIds, new Set())
-            const dots = []
+            const byState = new Map()
+            const titles = []
             for (const id of sessionIds) {
-              const summary = data.byId instanceof Map ? data.byId.get(id) : data.byId?.[id]
-              const state = folderDotState(statusFor(data.statuses, id), summary)
+              const summary = statusFor(data.statuses, id)
+                ?? rememberedStatuses.current.get(id)
+                ?? null
+              const state = folderDotState(summary, null)
               if (state === null) continue
-              dots.push({
-                state,
-                title: summary?.displayTitle ?? summary?.title ?? id,
-              })
+              const entry = byState.get(state) ?? { state, count: 0 }
+              entry.count += 1
+              byState.set(state, entry)
+              const title = summary?.title ?? summary?.name ?? id
+              if (typeof title === 'string' && title.length > 0) titles.push(title)
             }
-            if (dots.length === 0) continue
+            const entries = [...byState.values()]
+            const activeEntries = entries.filter((entry) => entry.state !== 'ongoing')
+            const hasOngoing = entries.some((entry) => entry.state === 'ongoing')
+            const isSoloBadge = !hasOngoing
+              && activeEntries.length === 1
+              && activeEntries[0].count === 1
+            if (activeEntries.length === 0 && !hasOngoing) {
+              oldBadges?.remove()
+              oldSpinner?.remove()
+              continue
+            }
+            const rowRect = row.getBoundingClientRect()
+            if (rowRect.width === 0) {
+              oldBadges?.remove()
+              oldSpinner?.remove()
+              continue
+            }
+            // Inline ownership is deliberate: the aggregate is absolutely
+            // positioned, and DSH may reconcile the row's class/style after
+            // our CSS has loaded. Without a positioned row the badge anchors
+            // to the scroller and can appear hundreds of pixels above its row.
+            row.style.position = 'relative'
 
-            const rect = row.getBoundingClientRect()
-            if (rect.width === 0 || rect.height === 0) continue
-            const title = row.querySelector('.wnFoaW_title')
-            const titleRect = title?.getBoundingClientRect()
-            const folder = row.querySelector('.wnFoaW_folder')
-            const folderRect = folder?.getBoundingClientRect()
-            const signature = dots.map(({ state, title: label }) => `${state}\u0000${label}`).join('\u0001')
-            let group = existing.get(workspace.workspaceId)
-            if (group === undefined) {
-              group = document.createElement('span')
-              group.className = 'dshia-folder-dots dshia-folder-dots-floating'
-              group.setAttribute('aria-hidden', 'true')
-              group.dataset.workspaceKey = workspace.workspaceId
+            const titleNode = row.querySelector('.wnFoaW_title')
+            let projectText = titleNode?.closest?.('.wnFoaW_projectText')
+              ?? titleNode?.parentElement
+              ?? null
+            while (projectText !== null && projectText.parentElement !== row) {
+              projectText = projectText.parentElement
             }
-            group.title = dots.map(({ title: label }) => label).join('\n')
-            if (group.dataset.signature !== signature) {
-              group.replaceChildren(...dots.map(({ state, title: label }) => (
-                createFolderStatusDot(state, label)
-              )))
-              group.dataset.signature = signature
+
+            let badges = oldBadges
+            if (activeEntries.length > 0) {
+              if (badges === null || badges.parentElement !== row) {
+                for (const stale of row.querySelectorAll(':scope > .dshia-folder-badges,:scope > .dshia-folder-dots')) {
+                  stale.remove()
+                }
+                badges = document.createElement('div')
+                badges.className = 'dshia-folder-badges'
+              }
+              const signature = activeEntries.map((entry) => `${entry.state}:${entry.count}`).join('|')
+              if (badges.dataset.signature !== signature) {
+                if (activeEntries.length > 1) {
+                  badges.replaceChildren(createFolderCapsule(activeEntries, titles.join('\n')))
+                } else {
+                  badges.replaceChildren(createFolderBadge(
+                    activeEntries[0].state,
+                    activeEntries[0].count,
+                    titles.join('\n'),
+                    isSoloBadge,
+                  ))
+                }
+                badges.dataset.signature = signature
+              }
+              badges.title = titles.join('\n')
+              if (badges.parentElement !== row) row.appendChild(badges)
+            } else {
+              badges?.remove()
+              badges = null
             }
-            const width = dots.reduce((sum, dot) => sum + (dot.state === 'ongoing' ? 14 : 10), 0)
-              + (dots.length - 1) * 2
-            let anchor = titleRect?.right ?? folderRect?.right ?? rect.left + 20
-            if (title !== null && typeof document.createRange === 'function') {
-              const range = document.createRange()
-              range.selectNodeContents(title)
-              const textRect = range.getBoundingClientRect()
-              if (textRect.width > 0) anchor = textRect.right
+
+            let spinner = oldSpinner
+            if (hasOngoing) {
+              if (spinner === null || spinner.parentElement !== row) {
+                for (const stale of row.querySelectorAll(':scope > .dshia-folder-spinner')) {
+                  stale.remove()
+                }
+                spinner = createFolderSpinner()
+                spinner.title = titles.join('\n')
+              }
+              const anchor = projectText?.nextSibling ?? null
+              if (spinner.parentElement !== row || spinner.previousElementSibling !== projectText) {
+                if (anchor !== null) row.insertBefore(spinner, anchor)
+                else row.appendChild(spinner)
+              }
+            } else {
+              spinner?.remove()
+              spinner = null
             }
-            const left = Math.min(Math.max(rect.left + 8, anchor + 5), rect.right - width - 8)
-            const centerY = rect.top + rect.height / 2 + 1.5
-            group.style.left = `${Math.round(left)}px`
-            group.style.top = `${Math.round(centerY)}px`
-            keep.add(group)
-            if (cursor === group) cursor = cursor.nextElementSibling
-            else layer.insertBefore(group, cursor)
+
+            if (badges !== null) {
+              // Home is a special workspace row and does not always expose the
+              // folder icon as a direct child; fall back to the descendant
+              // icon rather than leaving the badge at its static position.
+              const folder = row.querySelector(':scope > .wnFoaW_folder')
+                ?? row.querySelector('.wnFoaW_folder')
+              const folderRect = folder?.getBoundingClientRect()
+              const firstBadge = badges.firstElementChild
+              const firstRect = firstBadge?.getBoundingClientRect()
+              const badgeWidth = firstRect?.width ?? 14
+              const badgeHeight = firstRect?.height ?? 14
+              const nudge = isSoloBadge ? 2 : 0
+              const anchorLeft = folderRect?.left ?? rowRect.left + 14
+              const anchorTop = folderRect?.top ?? rowRect.top + 4
+              const desiredLeft = anchorLeft - rowRect.left - 4 - badgeWidth / 2 + nudge
+              const maxLeft = rowRect.width - badges.getBoundingClientRect().width - 4
+              badges.style.left = `${Math.max(2, Math.min(desiredLeft, maxLeft))}px`
+              // Put the badge's center just above the folder icon so it
+              // overlaps the icon's top-left corner, not the row center.
+              badges.style.top = `${Math.max(2, anchorTop - rowRect.top + 3 - badgeHeight / 2 + nudge)}px`
+            }
+            next.set(workspaceId, { badges, spinner })
           }
 
-          for (const group of existing.values()) {
-            if (!keep.has(group)) group.remove()
+          for (const [workspaceId, node] of groupsRef.current) {
+            if (!next.has(workspaceId)) {
+              node.badges?.remove()
+              node.spinner?.remove()
+            }
           }
+          groupsRef.current = next
         }, [])
 
-        React.useEffect(() => {
-          decorate()
-        }, [decorate, items, byId, statuses])
+        const schedule = React.useCallback(() => {
+          if (frameRef.current !== 0) return
+          frameRef.current = requestAnimationFrame(() => {
+            frameRef.current = 0
+            decorate()
+          })
+        }, [decorate])
 
         React.useEffect(() => {
-          let frame = 0
-          const schedule = () => {
-            if (frame !== 0) return
-            frame = requestAnimationFrame(() => {
-              frame = 0
-              decorate()
-            })
-          }
-          const layer = layerRef.current
+          schedule()
+        }, [items, statuses, schedule])
+
+        React.useEffect(() => {
+          const host = document.querySelector('.wnFoaW_scrollArea')
+            ?? document.querySelector('[class*="scrollArea"]')
+            ?? document.body
+          window.addEventListener('resize', schedule)
           const observer = new MutationObserver((mutations) => {
-            if (layer !== null && mutations.every((mutation) => (
-              mutation.target === layer || layer.contains(mutation.target)
-            ))) return
-            schedule()
+            for (const mutation of mutations) {
+              const target = mutation.target
+              if (mutation.type === 'attributes'
+                && mutation.attributeName === 'aria-expanded'
+                && target?.getAttribute?.('data-row-key')?.startsWith('workspace:') === true) {
+                schedule()
+                return
+              }
+              const inWorkspaceRow = target?.matches?.('[data-row-key^="workspace:"]') === true
+                || target?.closest?.('[data-row-key^="workspace:"]') != null
+              if (mutation.type === 'childList' && inWorkspaceRow) {
+                schedule()
+                return
+              }
+            }
           })
-          observer.observe(document.body, {
+          observer.observe(host, {
             subtree: true,
             childList: true,
             attributes: true,
-            attributeFilter: ['aria-expanded', 'data-row-key'],
+            attributeFilter: ['aria-expanded'],
           })
-          const onScroll = () => schedule()
-          const onResize = () => schedule()
-          window.addEventListener('scroll', onScroll, true)
-          window.addEventListener('resize', onResize)
           schedule()
-          const settle = window.setTimeout(schedule, 120)
           return () => {
+            window.removeEventListener('resize', schedule)
             observer.disconnect()
-            window.removeEventListener('scroll', onScroll, true)
-            window.removeEventListener('resize', onResize)
-            window.clearTimeout(settle)
-            cancelAnimationFrame(frame)
-            layerRef.current?.remove()
-            layerRef.current = null
-            for (const node of document.querySelectorAll('.wnFoaW_projectRow > .dshia-folder-dots')) {
-              node.remove()
+            cancelAnimationFrame(frameRef.current)
+            frameRef.current = 0
+            for (const group of groupsRef.current.values()) {
+              group.badges?.remove()
+              group.spinner?.remove()
             }
+            groupsRef.current.clear()
           }
-        }, [decorate])
+        }, [schedule])
 
         return null
       }
@@ -1210,53 +1314,93 @@ window.__ModuleLoader__.load({
     __parts.push(['context-usage', (function (require) {
 
     const React = require('react')
+    const reactDom = require('react-dom')
     const h = React.createElement
+    const { useEffect, useRef, useState } = React
 
-    /** Client locale namespace for this bundle's visible text. */
+    /* ---------------------------------------------------------------------- */
+    /* Constants                                                              */
+    /* ---------------------------------------------------------------------- */
+
     const NS = 'context-usage'
-
-    /**
-     * The UI build identity this installation ships, carried as the requesting
-     * client of an account call. A Client plugin cannot read the shell's own
-     * build version at runtime; a stale value only costs this pill, which shows
-     * its own reason whenever the balance outcome is not ready.
-     */
     const CLIENT_VERSION = '0.2.0-rc.2'
-
-    /** How often a visible page re-reads the balance. */
     const BALANCE_REFRESH_MS = 10000
-
-    /**
-     * Whether this bundle hides the shipped composer dock (the row under the
-     * composer card) while it is mounted. That row carries the shipped occupancy
-     * meter and the session stats pills; this bundle shows the occupancy in its
-     * own panel and the turn/step/pace figures in the panel's overview, and the
-     * shell exposes no switch for it (`ui-conversation`'s Config has no such
-     * field, and occupying `conversation.input.activity` — which does suppress
-     * the meter — also hides the model selector through `hidden: activity`).
-     *
-     * The override is an owned stylesheet scoped by our own marker inside that
-     * dock, so it can only ever match the dock this bundle renders into.
-     */
     const HIDE_SHIPPED_DOCK = true
-
-    /** Marker attribute on this bundle's composer-dock anchor entry. */
     const DOCK_MARKER = 'composer-dock-anchor'
-
-    /** This bundle's own stylesheet identity, cleaned up with the plugin. */
     const DOCK_STYLE_ID = '@local/dsh-context-usage/dock-override.css'
+    const PALETTE_STYLE_ID = '@local/dsh-context-usage/palette.css'
+
+    const RING_RADIUS = 5.2
+    const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS
+
+    /* Painted left to right. Four groups only: a bucket so thin that it reads as
+     * a scratch is worse than no bucket at all, so user messages, assistant
+     * replies and compaction summaries share one "messages" band. Tool
+     * definitions and tool results stay adjacent — they are one story. */
+    const BUCKETS = [
+      { key: 'system', label: 'system', sources: ['system'] },
+      { key: 'tools', label: 'tools', sources: ['tools'] },
+      { key: 'tool', label: 'tool', sources: ['tool'] },
+      { key: 'messages', label: 'messages', sources: ['user', 'assistant', 'compact'] },
+    ]
+
+    /** Buckets shown when the Host projection is unavailable (older Host half). */
+    const LEGACY_BUCKETS = [
+      { key: 'system', label: 'system', sources: ['system'] },
+      { key: 'tools', label: 'tools', sources: ['tools'] },
+      { key: 'messages', label: 'messages', sources: ['assistant'] },
+    ]
+
+
+    /* ---------------------------------------------------------------------- */
+    /* Palette                                                                */
+    /* ---------------------------------------------------------------------- */
+
+    /* Every band is painted in a light, low-saturation fill; what the current
+     * turn added is painted in that band's `ink` at the band's right edge. The
+     * four hues were picked as one sequence — violet → blue → amber → green —
+     * so neighbours never fight: the warm amber never lands next to the green,
+     * and the red that used to sit beside it is gone entirely. */
+    const PALETTE_CSS = `
+:root {
+  --cu-system: #7c3aed;
+  --cu-tools: #2563eb;
+  --cu-tool: #0891b2;
+  --cu-messages: #059669;
+  --cu-track: rgba(0, 0, 0, 0.07);
+  --cu-turn: #047857;
+  --cu-ring: #4d8df5;
+}
+body[data-ds-dark-theme] {
+  --cu-system: #6d28d9;
+  --cu-tools: #1d4ed8;
+  --cu-tool: #0e7490;
+  --cu-messages: #047857;
+  --cu-track: rgba(255, 255, 255, 0.10);
+  --cu-turn: #6ee7b7;
+  --cu-ring: #7fb2ff;
+}
+`
+
+
+    /* ---------------------------------------------------------------------- */
+    /* Copy                                                                   */
+    /* ---------------------------------------------------------------------- */
 
     const zh = {
       title: '上下文用量',
-      commandDescription: '查看当前会话的上下文用量与构成',
-      running: '正在统计上下文用量…',
-      failed: '上下文用量统计失败',
+      commandDescription: '查看本会话的上下文占用明细',
+      running: '统计中…',
+      failed: '统计失败',
       system: '系统提示词',
       tools: '工具定义',
+      user: '用户消息',
+      assistant: '助手回复',
+      tool: '工具结果',
+      compact: '压缩摘要',
       messages: '对话消息',
       free: '剩余空间',
-      noSample: '暂无用量样本',
-      totals: '本会话累计',
+      noSample: '暂无样本',
       miss: '未命中',
       hit: '命中',
       hitRate: '命中率',
@@ -1264,6 +1408,8 @@ window.__ModuleLoader__.load({
       turns: '轮',
       steps: '步',
       tps: 'tok/s',
+      turnNew: '本轮',
+      estimated: '估算',
       balanceTitle: 'DeepSeek 余额',
       balanceSignedOut: '余额 未登录',
       balanceEmpty: '余额 无钱包',
@@ -1273,15 +1419,18 @@ window.__ModuleLoader__.load({
 
     const en = {
       title: 'Context usage',
-      commandDescription: "Show this session's context usage and composition",
-      running: 'Measuring context usage…',
-      failed: 'Context usage failed',
+      commandDescription: 'Show what this session has in context',
+      running: 'Measuring…',
+      failed: 'Measurement failed',
       system: 'System prompt',
-      tools: 'Tools',
+      tools: 'Tool definitions',
+      user: 'User messages',
+      assistant: 'Assistant replies',
+      tool: 'Tool results',
+      compact: 'Compaction',
       messages: 'Messages',
-      free: 'Free space',
-      noSample: 'No usage sample',
-      totals: 'Session totals',
+      free: 'Free',
+      noSample: 'No sample yet',
       miss: 'Uncached',
       hit: 'Cached',
       hitRate: 'Hit rate',
@@ -1289,6 +1438,8 @@ window.__ModuleLoader__.load({
       turns: 'turns',
       steps: 'steps',
       tps: 'tok/s',
+      turnNew: 'this turn',
+      estimated: 'estimate',
       balanceTitle: 'DeepSeek balance',
       balanceSignedOut: 'balance: signed out',
       balanceEmpty: 'balance: no wallet',
@@ -1296,278 +1447,447 @@ window.__ModuleLoader__.load({
       balanceError: 'balance: call failed',
     }
 
-    /** Composition rows and the free remainder, in display order. */
-    const ROWS = [
-      { key: 'systemTokens', label: 'system', kind: 'system', color: 'var(--dsw-alias-brand-primary)' },
-      { key: 'toolsTokens', label: 'tools', kind: 'tools', color: 'var(--dsw-alias-state-warn-primary)' },
-      { key: 'messageTokens', label: 'messages', kind: 'messages', color: 'var(--dsw-alias-state-success-primary)' },
-    ]
-
-    /** Unoccupied-cell tint. */
-    const FREE_COLOR = 'var(--dsw-alias-state-idle-primary)'
-
-    /** Occupancy grid geometry: a filled area, wrapped row by row. */
-    const GRID_COLUMNS = 36
-    const GRID_ROWS = 5
-    const GRID_CELLS = GRID_COLUMNS * GRID_ROWS
-
-    /** Ring geometry: 16px viewBox, 5.2px radius. */
-    const RADIUS = 5.2
-    const CIRCUMFERENCE = 2 * Math.PI * RADIUS
+    /* ---------------------------------------------------------------------- */
+    /* Styles                                                                 */
+    /* ---------------------------------------------------------------------- */
 
     const S = {
-      /** The legacy command row's card: a chat-flow surface with its own width. */
-      card: {
-        display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 560, boxSizing: 'border-box',
-        padding: '10px 12px', border: '1px solid var(--dsw-alias-border-l1)', borderRadius: 12,
-        background: 'var(--dsw-alias-bg-layer-1)', color: 'var(--dsw-alias-label-primary)',
-        fontSize: 13, lineHeight: '20px',
-      },
-      /** Composer-dock wrapper: the shipped docks' geometry, aligned with the composer card. */
+      /* The band is a flex child of the shipped composer card, inserted between
+       * the draft and the button row. Measured against the shipped CSS, the
+       * draft text starts 12px below the card's top edge (8px card padding-top
+       * + 4px .input padding-top) and the one-line draft box also carries 8px
+       * of slack below the text (min-height 36 vs 24px line + 4px pad), so a 0
+       * margin still reads as a ~20px gap. -9.8px pulls it to ~10.2px (12px
+       * minus the 15% the user asked to trim), and -7.2px keeps 6.8px to the
+       * button row (12px gap + 2px row padding). */
       panel: {
-        boxSizing: 'border-box', flex: 'none',
-        width: 'calc(100% - var(--dsh-composer-side-clearance) - var(--dsh-composer-side-clearance) - var(--dsh-composer-dock-inset) - var(--dsh-composer-dock-inset))',
-        maxWidth: 'calc(var(--dsh-composer-card-max-width) - var(--dsh-composer-dock-inset) - var(--dsh-composer-dock-inset))',
-        margin: '0 auto',
-        padding: '0 var(--dsh-composer-dock-inset)',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 6,
+        margin: '-9.8px 0 -7.2px',
+        padding: '0 12px 0',
+        minWidth: 0,
       },
-      /** The dock panel's surface: the same menu material the shipped docks use. */
       panelCard: {
-        display: 'flex', flexDirection: 'column', gap: 6, boxSizing: 'border-box',
-        padding: '8px 10px', borderRadius: 'var(--dsw-radius-lg)',
-        background: 'var(--dsw-specific-menu)', backdropFilter: 'var(--dsw-menu-backdrop-filter)',
-        boxShadow: 'var(--dsw-elevation-panel)', color: 'var(--dsw-alias-label-primary)',
-        fontSize: 13, lineHeight: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 6,
+        minWidth: 0,
       },
-      head: { display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 },
-      title: { fontWeight: 600, flex: 'none' },
-      spacer: { flex: 'auto' },
-      figure: { color: 'var(--dsw-alias-label-secondary)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' },
-      percent: { color: 'var(--dsw-alias-brand-primary)', fontWeight: 600, fontVariantNumeric: 'tabular-nums', flex: 'none' },
-      grid: { display: 'grid', gridTemplateColumns: `repeat(${GRID_COLUMNS}, 1fr)`, gap: 2 },
-      cell: { height: 5, borderRadius: 1, background: FREE_COLOR },
-      /**
-       * The widest arrangement: one band holding the overview, the occupancy
-       * area and the legend, with the four gaps `space-evenly` leaves around and
-       * between them equal to the four `1fr` slack columns this replaced.
-       *
-       * It wraps rather than shrinking without limit, because the grid this
-       * replaced overlapped: a container narrower than the blocks' combined
-       * minimum collapsed its `1fr` slack columns to zero while the `auto`
-       * columns kept their content, so the occupancy area was pushed over the
-       * legend the moment a side pane narrowed the chat column.
-       */
-      main: {
-        display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'space-evenly',
+      card: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 6,
+        padding: '10px 12px',
+        border: '1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.1))',
+        borderRadius: 'var(--dsw-radius-lg, 10px)',
+        minWidth: 0,
       },
-      /**
-       * The overview stack — title, figures, pace — centered on one axis, so the
-       * longest line (the pace) reads as the block's own width rather than
-       * hanging past the lines above it.
-       */
-      headLeft: { flex: '0 1 auto', display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' },
-      headRow: { display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 },
-      /** The turn/step/pace line the shipped composer dock no longer shows. */
-      pace: { color: 'var(--dsw-alias-label-secondary)', fontSize: 11, lineHeight: '16px', whiteSpace: 'nowrap' },
-      /**
-       * The occupancy area in the one-band arrangement: a preferred `30em` band
-       * that may shrink — never grow, so `main`'s gaps stay even — down to the
-       * width its own stats need.
-       */
-      viz: {
-        flex: '0 1 30em', display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0,
+      head: { display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', minWidth: 0 },
+      title: {
+        fontSize: 12,
+        fontWeight: 600,
+        color: 'var(--dsw-alias-label-primary, inherit)',
+        whiteSpace: 'nowrap',
       },
-      /** The same area once it holds a band of its own. */
-      vizFull: { display: 'flex', flexDirection: 'column', gap: 8, width: '100%' },
-      /**
-       * A three-column legend grid: names, values, and shares align on content
-       * width. It sizes to its content wherever it sits beside something, and
-       * centers in the full-width seat the stacked arrangement gives it.
-       */
-      legendBox: {
-        flex: '0 0 auto', display: 'grid', gridTemplateColumns: 'auto auto auto',
-        gap: '3px 6px', alignItems: 'center', justifyContent: 'center',
+      figure: {
+        fontSize: 11,
+        color: 'var(--dsw-alias-label-secondary, inherit)',
+        fontVariantNumeric: 'tabular-nums',
+        whiteSpace: 'nowrap',
       },
-      /** The two narrower arrangements: a stack, and the pair it starts with. */
-      stack: { display: 'flex', flexDirection: 'column', gap: 8 },
-      pair: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-evenly' },
-      legendName: { display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 },
-      legendLabel: { color: 'var(--dsw-alias-label-secondary)', whiteSpace: 'nowrap' },
-      legendValue: { fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', textAlign: 'right' },
-      legendPercent: { color: 'var(--dsw-alias-label-secondary)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', textAlign: 'right' },
-      stats: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 14px' },
-      statCell: { display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 },
-      statLabel: { color: 'var(--dsw-alias-label-secondary)', fontSize: 11, lineHeight: '16px', flex: 'none' },
-      statValue: { fontSize: 15, fontWeight: 600, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' },
-      muted: { color: 'var(--dsw-alias-label-secondary)' },
-      error: { color: 'var(--dsw-alias-state-error-primary)' },
+      percent: {
+        fontSize: 12,
+        fontWeight: 600,
+        fontVariantNumeric: 'tabular-nums',
+        color: 'var(--dsw-alias-label-primary, inherit)',
+        whiteSpace: 'nowrap',
+      },
+      turnBadge: {
+        fontSize: 11,
+        fontWeight: 600,
+        fontVariantNumeric: 'tabular-nums',
+        color: 'var(--cu-turn)',
+        whiteSpace: 'nowrap',
+      },
+      spacer: { flex: '1 1 auto', minWidth: 0 },
+      stats: {
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 14,
+        flexWrap: 'wrap',
+        minWidth: 0,
+      },
+      statLabel: { fontSize: 13, color: 'var(--dsw-alias-label-secondary, inherit)', whiteSpace: 'nowrap' },
+      statValue: {
+        fontSize: 14,
+        fontWeight: 600,
+        color: 'var(--dsw-alias-label-primary, inherit)',
+        fontVariantNumeric: 'tabular-nums',
+        whiteSpace: 'nowrap',
+        marginLeft: 5,
+      },
+      bar: {
+        position: 'relative',
+        width: '100%',
+        height: 12,
+        borderRadius: 6,
+        overflow: 'hidden',
+        background: 'var(--cu-track)',
+      },
+      barLayer: {
+        position: 'absolute',
+        top: -2,
+        bottom: -2,
+        left: -2,
+        right: -2,
+        display: 'flex',
+        alignItems: 'stretch',
+        filter: 'blur(1px)',
+      },
+      segment: {
+        height: '100%',
+        flex: '0 0 auto',
+        overflow: 'hidden',
+      },
+      legend: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        flexWrap: 'wrap',
+        minWidth: 0,
+      },
+      chip: { display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0, whiteSpace: 'nowrap' },
+      chipLabel: { fontSize: 11.5, color: 'var(--dsw-alias-label-secondary, inherit)' },
+      chipValue: {
+        fontSize: 12,
+        fontWeight: 600,
+        color: 'var(--dsw-alias-label-primary, inherit)',
+        fontVariantNumeric: 'tabular-nums',
+      },
+      pace: { fontSize: 11, color: 'var(--dsw-alias-label-secondary, inherit)', whiteSpace: 'nowrap' },
+      muted: { fontSize: 11, color: 'var(--dsw-alias-label-secondary, inherit)' },
+      error: { fontSize: 12, color: 'var(--dsw-alias-state-error-primary, #e5484d)' },
       toggle: {
-        display: 'inline-flex', alignItems: 'center', gap: 5, height: 26, padding: '0 8px',
-        border: 'none', borderRadius: 999, background: 'transparent', cursor: 'pointer',
-        color: 'var(--dsw-alias-label-secondary)', fontFamily: 'inherit', fontSize: 12,
-        fontVariantNumeric: 'tabular-nums', lineHeight: 1,
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 4,
+        height: 24,
+        padding: '0 6px',
+        border: '1px solid transparent',
+        borderRadius: 6,
+        background: 'transparent',
+        color: 'var(--dsw-alias-label-secondary, inherit)',
+        fontSize: 11,
+        fontVariantNumeric: 'tabular-nums',
+        cursor: 'pointer',
       },
-      toggleActive: { background: 'var(--dsw-alias-interactive-bg-hover-solid)', color: 'var(--dsw-alias-label-primary)' },
+      toggleActive: {
+        background: 'var(--cu-track)',
+        color: 'var(--dsw-alias-label-primary, inherit)',
+      },
       balance: {
-        display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--dsw-alias-label-secondary)',
-        fontSize: 12, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap',
+        display: 'inline-flex',
+        alignItems: 'center',
+        height: 24,
+        padding: '0 2px',
+        fontSize: 12,
+        fontVariantNumeric: 'tabular-nums',
+        whiteSpace: 'nowrap',
+        color: 'var(--dsw-alias-label-secondary, inherit)',
       },
     }
 
-    /**
-     * Body widths, in CSS pixels, at which the arrangement changes.
-     *
-     * `WIDE_MIN` is what the one-band arrangement needs before it starts
-     * squeezing the occupancy area; it must stay below the narrowest body the
-     * host actually gives the panel. The shipped shell pins
-     * `--dsh-chat-content-width` at `clamp(680px, …)` and the panel body is
-     * that width minus the composer insets (~687px at 150% scaling), so the
-     * old 720 threshold could never be reached and every window fell into the
-     * stacked `medium` arrangement. 660 leaves room for the pair layout while
-     * staying under that floor.
-     */
-    const WIDE_MIN = 660
-    const MEDIUM_MIN = 440
+    /* ---------------------------------------------------------------------- */
+    /* Formatting                                                             */
+    /* ---------------------------------------------------------------------- */
 
     /**
-     * Pick the body's arrangement for a measured width.
-     * @param width - the body's content width, `0` before it is first measured.
-     * @returns `wide`, `medium` or `narrow`.
-     */
-    function layoutFor(width) {
-      if (!(width > 0)) return 'wide'
-      if (width >= WIDE_MIN) return 'wide'
-      if (width >= MEDIUM_MIN) return 'medium'
-      return 'narrow'
-    }
-
-    /**
-     * Track one element's content width, because the panel lives in the chat
-     * column: a side pane narrowing that column resizes the panel without moving
-     * any viewport breakpoint.
-     * @returns a ref to attach to the measured element, and its width.
-     */
-    function useMeasuredWidth() {
-      const ref = React.useRef(null)
-      const [width, setWidth] = React.useState(0)
-      React.useLayoutEffect(() => {
-        const node = ref.current
-        if (node === null) return undefined
-        setWidth(node.clientWidth)
-        if (typeof ResizeObserver === 'undefined') return undefined
-        const observer = new ResizeObserver(() => {
-          setWidth(node.clientWidth)
-        })
-        observer.observe(node)
-        return () => {
-          observer.disconnect()
-        }
-      }, [])
-      return [ref, width]
-    }
-
-    /**
-     * Format one token count compactly.
-     * @param value - token count, possibly unknown.
-     * @returns an exact small integer, `1.2K`, `3.4M`, or `—`.
+     * Compact token count: exact below 1000, then `101.4K`, `25.7M`.
+     * @param value - the count, possibly undefined.
+     * @returns display text, `—` when there is no sample.
      */
     function formatTokens(value) {
-      if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return '—'
-      if (value < 1e3) return String(Math.round(value))
-      if (value < 1e6) return `${Math.round(value / 100) / 10}K`
-      return `${Math.round(value / 1e5) / 10}M`
+      if (value === undefined || value === null || !Number.isFinite(value)) return '—'
+      const n = Math.max(0, value)
+      if (n < 1000) return String(Math.round(n))
+      if (n < 1e6) return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`
+      if (n < 1e9) return `${(n / 1e6).toFixed(1).replace(/\.0$/, '')}M`
+      return `${(n / 1e9).toFixed(1).replace(/\.0$/, '')}B`
     }
 
     /**
-     * Format one wallet amount the way the account page does.
-     * @param amount - validated decimal balance string.
-     * @param symbol - currency symbol.
-     * @returns currency text, `<¥0.01` for sub-cent amounts.
+     * Balance amount as currency text.
+     * @param amount - a decimal string or number.
+     * @param symbol - `¥` or `$`.
+     * @returns display text.
      */
     function formatBalance(amount, symbol) {
       const value = Number(amount)
       if (!Number.isFinite(value)) return `${symbol}—`
-      if (value === 0) return `${symbol}0.00`
-      if (value < 0) return `-${symbol}${value > -0.01 ? '0.01' : Math.abs(value).toFixed(2)}`
-      if (value < 0.01) return `<${symbol}0.01`
-      return `${symbol}${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+      if (value > 0 && value < 0.01) return `<${symbol}0.01`
+      return `${symbol}${value.toFixed(2)}`
     }
 
     /**
-     * One part-of-whole percentage, absent when the whole is unknown or not positive.
-     * @param part - numerator, possibly unknown.
-     * @param whole - denominator, possibly unknown.
-     * @returns a percentage clamped to 0..100, or undefined.
+     * A ratio clamped to 0..100, undefined when undefined.
+     * @param part - numerator.
+     * @param whole - denominator.
+     * @returns the percentage in 0..100, or undefined.
      */
     function share(part, whole) {
-      if (typeof part !== 'number' || !Number.isFinite(part)) return undefined
-      if (typeof whole !== 'number' || !Number.isFinite(whole) || whole <= 0) return undefined
+      if (!Number.isFinite(part) || !Number.isFinite(whole) || whole <= 0) return undefined
       return Math.max(0, Math.min(100, (part / whole) * 100))
     }
 
-    /** Round one percentage to a single decimal place for display. */
-    function percentText(percent) {
-      return `${Math.round(percent * 10) / 10}%`
+    /**
+     * One-decimal percentage, without a trailing `.0`.
+     * @param value - the percentage.
+     * @returns display text.
+     */
+    function percentText(value) {
+      if (value === undefined) return '—'
+      return `${value.toFixed(1).replace(/\.0$/, '')}%`
     }
 
-    /** One registered component's locale seat, or a key-echoing stand-in. */
+    /**
+     * The locale binder handed to every slot.
+     * @param props - slot props carrying `t`.
+     * @returns the translate function.
+     */
     function translator(props) {
       return props && typeof props.t === 'function' ? props.t : (key) => key
     }
 
-    /** One registered component's projection reader, or an always-empty hook. */
+    /**
+     * The projection reader handed to every slot.
+     * @param props - slot props carrying `useProjection`.
+     * @returns the read function.
+     */
     function projectionReader(props) {
-      return props && typeof props.useProjection === 'function' ? props.useProjection : () => undefined
+      return props && typeof props.useProjection === 'function'
+        ? props.useProjection
+        : () => undefined
     }
 
-    /** Read one session's occupancy numbers from the page's own projections. */
-    function occupancyOf(read) {
-      const pressure = read('contextPressure')
-      const used = pressure === undefined ? undefined : pressure.projectedTokens ?? pressure.pressureTokens
-      const capacity = pressure === undefined ? undefined : pressure.contextWindow
-      return { pressure, used, capacity, usedPercent: share(used, capacity) }
-    }
-
-    //#region panel state
-
-    /** Sessions whose occupancy panel the user opened, by `/context` or the button. */
-    const PANEL_OPEN = new Set()
-
-    /** Panel-state subscribers (one per mounted dock entry and toggle). */
-    const PANEL_LISTENERS = new Set()
+    /* ---------------------------------------------------------------------- */
+    /* Model                                                                  */
+    /* ---------------------------------------------------------------------- */
 
     /**
-     * Open or close one session's panel and notify its mounted entries.
-     * @param sessionId - the session owning the panel.
-     * @param value - whether the panel should be open.
+     * Compose the display model: exact occupancy, six priced buckets rescaled
+     * onto it, this turn's additions, and the free remainder.
+     *
+     * Rescaling exists because two different meters meet here. `contextPressure`
+     * reports what the provider actually billed for the last request — exact,
+     * compactors and proxies included. The projection prices the session log
+     * with a fixed density — honest for proportions, always a little off in
+     * absolute terms, and blind to a proxy that rewrites the request in flight.
+     * Anchoring the buckets on the reported size keeps every number consistent
+     * with the occupancy, which is the number the user is really reading.
+     *
+     * @param pressure - the `contextPressure` projection value.
+     * @param detail - this bundle's `contextUsage` projection value.
+     * @param breakdown - the shipped `contextBreakdown` value (legacy fallback).
+     * @returns the model, or undefined before the first request.
      */
-    function setPanelOpen(sessionId, value) {
-      if (typeof sessionId !== 'string') return
-      const changed = value ? !PANEL_OPEN.has(sessionId) : PANEL_OPEN.has(sessionId)
-      if (!changed) return
-      if (value) PANEL_OPEN.add(sessionId)
-      else PANEL_OPEN.delete(sessionId)
-      for (const listener of PANEL_LISTENERS) listener()
+    function usageModel(pressure, detail, breakdown) {
+      const used = pressure === undefined ? undefined : pressure.projectedTokens ?? pressure.pressureTokens
+      const capacity = pressure === undefined ? undefined : pressure.contextWindow
+      if (!Number.isFinite(capacity) || capacity <= 0) return undefined
+
+      const legacy = detail === undefined || detail === null
+      const source = legacy
+        ? {
+          system: breakdown === undefined ? 0 : breakdown.systemTokens,
+          tools: breakdown === undefined ? 0 : breakdown.toolsTokens,
+          assistant: breakdown === undefined ? 0 : breakdown.messageTokens,
+        }
+        : {
+          system: count(detail.system),
+          tools: count(detail.tools),
+          user: count(detail.user),
+          assistant: count(detail.assistant),
+          tool: count(detail.tool),
+          compact: count(detail.compact),
+        }
+
+      const budget = Number.isFinite(used) ? Math.max(0, used) : 0
+      const fixed = count(source.system) + count(source.tools)
+      const messages = count(source.user) + count(source.assistant) + count(source.tool) + count(source.compact)
+      const priced = fixed + messages
+
+      let kFixed = 1
+      let kMessages = 1
+      if (budget > 0 && priced > 0) {
+        if (budget <= fixed || messages <= 0) {
+          kFixed = budget / priced
+          kMessages = kFixed
+        } else {
+          kMessages = (budget - fixed) / messages
+        }
+      }
+
+      const turn = legacy || detail.turn === undefined ? undefined : detail.turn
+      const scaleOf = (key) => (key === 'system' || key === 'tools' ? kFixed : kMessages)
+      const placed = (key) => count(source[key]) * scaleOf(key)
+      /* `turn` already holds the delta, not a baseline: the Host folds it as
+       * "current minus the value at the last `turn/start`". */
+      const added = (key) => (turn === undefined ? 0 : count(turn[key]) * scaleOf(key))
+
+      const buckets = (legacy ? LEGACY_BUCKETS : BUCKETS).map((bucket) => {
+        let value = 0
+        let raw = 0
+        let delta = 0
+        for (const key of bucket.sources) {
+          value += placed(key)
+          raw += count(source[key])
+          delta += added(key)
+        }
+        return {
+          key: bucket.key,
+          label: bucket.label,
+          sources: bucket.sources,
+          value,
+          raw,
+          delta: value > 0 ? Math.min(delta, value) : 0,
+        }
+      })
+
+
+      let deltaTotal = 0
+      for (const bucket of buckets) deltaTotal += bucket.delta
+
+      return {
+        used: budget,
+        capacity,
+        usedPercent: share(budget, capacity),
+        free: Math.max(0, capacity - budget),
+        buckets,
+        painted: buckets.filter((bucket) => bucket.value > 0),
+        deltaTotal,
+      }
     }
 
-    /** Close every panel; the plugin's own teardown. */
+    /**
+     * A non-negative finite count, or 0.
+     * @param value - anything.
+     * @returns the count.
+     */
+    function count(value) {
+      return Number.isFinite(value) && value > 0 ? value : 0
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* Panel state                                                            */
+    /* ---------------------------------------------------------------------- */
+
+    /** Session ids whose panel is open. */
+    const PANEL_OPEN = new Set()
+    /** Render callbacks to wake when that set changes. */
+    const PANEL_LISTENERS = new Set()
+    /**
+     * Route the Host serves the remembered toggles on. The Host, not
+     * `localStorage`, owns this: every GUI launch picks a fresh port, and a
+     * remembered toggle must survive that.
+     */
+    const PANEL_ROUTE = '/__context-usage/panels'
+    /** Whether the Host copy has been read once in this page. */
+    let PANEL_LOADED = false
+    /** Shared read, so every band mounting at once costs one request. */
+    let PANEL_HYDRATING = null
+
+    function notifyPanels() {
+      for (const listener of Array.from(PANEL_LISTENERS)) listener()
+    }
+
+    /**
+     * Read the remembered toggles from the Host once. A failure leaves the
+     * in-memory set alone: the band still works, it just forgets on reload.
+     */
+    function hydratePanels() {
+      if (PANEL_LOADED || PANEL_HYDRATING !== null) return
+      let request
+      try {
+        request = fetch(PANEL_ROUTE, { headers: { accept: 'application/json' } })
+      } catch {
+        return
+      }
+      PANEL_HYDRATING = request
+        .then((response) => (response.ok ? response.json() : null))
+        .then((body) => {
+          const panels = body && body.panels
+          if (!panels || typeof panels !== 'object') return
+          let changed = false
+          for (const [sessionId, open] of Object.entries(panels)) {
+            if (open === true && typeof sessionId === 'string' && !PANEL_OPEN.has(sessionId)) {
+              PANEL_OPEN.add(sessionId)
+              changed = true
+            }
+          }
+          PANEL_LOADED = true
+          if (changed) notifyPanels()
+        })
+        .catch(() => {})
+        .then(() => {
+          PANEL_HYDRATING = null
+        })
+    }
+
+    /**
+     * Send one toggle to the Host. Fire-and-forget: a failed write only costs
+     * the memory across a restart.
+     * @param sessionId - the session.
+     * @param open - the new state.
+     */
+    function persistPanel(sessionId, open) {
+      try {
+        void fetch(PANEL_ROUTE, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ sessionId, open }),
+          keepalive: true,
+        }).catch(() => {})
+      } catch {
+        /* persistence is best effort */
+      }
+    }
+
+    /**
+     * Open or close one session's panel.
+     * @param sessionId - the session.
+     * @param value - the desired state.
+     */
+    function setPanelOpen(sessionId, value) {
+      if (typeof sessionId !== 'string' || sessionId.length === 0) return
+      const open = PANEL_OPEN.has(sessionId)
+      if (open === value) return
+      if (value) PANEL_OPEN.add(sessionId)
+      else PANEL_OPEN.delete(sessionId)
+      notifyPanels()
+      persistPanel(sessionId, value)
+    }
+
+    /** Close every panel (plugin teardown). */
     function closeAllPanels() {
       if (PANEL_OPEN.size === 0) return
       PANEL_OPEN.clear()
-      for (const listener of PANEL_LISTENERS) listener()
+      notifyPanels()
     }
 
     /**
-     * Subscribe one mounted entry to its session's panel state.
-     * @param sessionId - the entry's session.
-     * @returns whether that session's panel is open.
+     * Subscribe one component to a session's panel state.
+     * @param sessionId - the session.
+     * @returns whether its panel is open.
      */
     function usePanelOpen(sessionId) {
-      const [open, setOpen] = React.useState(() => PANEL_OPEN.has(sessionId))
-      React.useEffect(() => {
-        const sync = () => setOpen(PANEL_OPEN.has(sessionId))
-        sync()
+      const [open, setOpen] = useState(() => typeof sessionId === 'string' && PANEL_OPEN.has(sessionId))
+      useEffect(() => {
+        const sync = () => setOpen(typeof sessionId === 'string' && PANEL_OPEN.has(sessionId))
         PANEL_LISTENERS.add(sync)
+        sync()
+        hydratePanels()
         return () => {
           PANEL_LISTENERS.delete(sync)
         }
@@ -1575,160 +1895,211 @@ window.__ModuleLoader__.load({
       return open
     }
 
-    //#endregion
+    /* ---------------------------------------------------------------------- */
+    /* Atoms                                                                  */
+    /* ---------------------------------------------------------------------- */
 
     /**
-     * One legend glyph, drawn in the current text color.
-     * @param props - glyph kind and tint.
-     * @returns a 14px decorative SVG.
+     * Tween the decorative menu glyph.
+     * @returns a 16px SVG.
      */
-    function Glyph(props) {
-      const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.3, strokeLinejoin: 'round', strokeLinecap: 'round' }
-      let shape
-      if (props.kind === 'system') {
-        shape = [
-          h('rect', Object.assign({ key: 'sheet', x: 3.4, y: 2.8, width: 9.2, height: 10.4, rx: 1.6 }, stroke)),
-          h('path', Object.assign({ key: 'lines', d: 'M5.8 6.2h4.4M5.8 8.6h4.4M5.8 11h2.6' }, stroke)),
-        ]
-      } else if (props.kind === 'tools') {
-        shape = [
-          h('path', Object.assign({ key: 'track', d: 'M3.4 5.4h9.2M3.4 10.6h9.2' }, stroke)),
-          h('circle', Object.assign({ key: 'knob-a', cx: 6.4, cy: 5.4, r: 1.5 }, stroke)),
-          h('circle', Object.assign({ key: 'knob-b', cx: 9.6, cy: 10.6, r: 1.5 }, stroke)),
-        ]
-      } else if (props.kind === 'free') {
-        shape = [h('rect', Object.assign({ key: 'free', x: 3.4, y: 3.4, width: 9.2, height: 9.2, rx: 1.6, strokeDasharray: '2.4 2.4' }, stroke))]
-      } else {
-        shape = [h('path', Object.assign({ key: 'bubble', d: 'M3.2 3.4h9.6v6.4H7.4L4.2 12.2V9.8H3.2z' }, stroke))]
-      }
+    function ContextGlyph() {
       return h('svg', {
-        viewBox: '0 0 16 16', width: 14, height: 14, 'aria-hidden': true,
-        style: { flex: 'none', color: props.color || 'var(--dsw-alias-label-secondary)' },
-      }, shape)
-    }
-
-    /**
-     * The composer-menu glyph: the bundle icon's three arcs in the row's own
-     * text color, sized by the menu's icon slot.
-     * @param props - menu slot size.
-     * @returns the decorative menu glyph.
-     */
-    function ContextGlyph(props) {
-      const size = typeof props.size === 'number' ? props.size : 14
-      const arc = (key, fraction, offset) => h('circle', {
-        key,
-        cx: 8, cy: 8, r: RADIUS, fill: 'none', stroke: 'currentColor', strokeWidth: 1.6,
-        strokeDasharray: `${CIRCUMFERENCE * fraction} ${CIRCUMFERENCE * (1 - fraction)}`,
-        strokeDashoffset: -CIRCUMFERENCE * offset,
-        transform: 'rotate(-90 8 8)',
-      })
-      return h('svg', { viewBox: '0 0 16 16', width: size, height: size, 'aria-hidden': true, style: { flex: 'none' } }, [
-        h('circle', { key: 'track', cx: 8, cy: 8, r: RADIUS, fill: 'none', stroke: 'currentColor', strokeOpacity: 0.22, strokeWidth: 1.6 }),
-        arc('system', 0.15, 0),
-        arc('tools', 0.3, 0.19),
-        arc('messages', 0.1, 0.53),
-      ])
-    }
-
-    /**
-     * The header occupancy ring.
-     * @param props - occupancy percentage, absent before a sample exists.
-     * @returns a 16px decorative SVG.
-     */
-    function Ring(props) {
-      const percent = typeof props.percent === 'number' ? Math.max(0, Math.min(100, props.percent)) : 0
-      return h('svg', {
-        viewBox: '0 0 16 16', width: 16, height: 16, 'aria-hidden': true, style: { flex: 'none' },
+        width: 16,
+        height: 16,
+        viewBox: '0 0 16 16',
+        'aria-hidden': 'true',
+        style: { flex: '0 0 auto' },
       }, [
-        h('circle', { key: 'track', cx: 8, cy: 8, r: RADIUS, fill: 'none', stroke: 'var(--dsw-alias-border-l2)', strokeWidth: 1.6 }),
-        h('circle', {
-          key: 'fill', cx: 8, cy: 8, r: RADIUS, fill: 'none', stroke: 'var(--dsw-alias-brand-primary)',
-          strokeWidth: 1.6, strokeLinecap: 'round',
-          strokeDasharray: `${(CIRCUMFERENCE * percent) / 100} ${CIRCUMFERENCE}`, transform: 'rotate(-90 8 8)',
+        h('path', {
+          key: 'a',
+          d: 'M2 4.5A2.5 2.5 0 0 1 4.5 2h7A2.5 2.5 0 0 1 14 4.5v3A2.5 2.5 0 0 1 11.5 10H6l-2.6 2.1A.6.6 0 0 1 2.4 11.6V9.9',
+          fill: 'none',
+          stroke: 'currentColor',
+          strokeWidth: 1.4,
+          strokeLinejoin: 'round',
+          strokeLinecap: 'round',
         }),
       ])
     }
 
     /**
-     * One legend row: it contributes three grid items to {@link S.legendBox} —
-     * the named glyph, the value, and the share — so the grid sizes each column
-     * to its widest content and no row stretches over its own text.
-     * @param props - glyph kind, label, tint, value text, and optional share.
-     * @returns the row's three grid items.
+     * The filled occupancy ring.
+     * @param props - `percent` in 0..100, or undefined for no sample.
+     * @returns a 16px SVG.
      */
-    function LegendCell(props) {
-      return h(React.Fragment, null, [
-        h('div', { key: 'name', style: S.legendName }, [
-          h(Glyph, { key: 'glyph', kind: props.kind, color: props.color }),
-          h('span', { key: 'label', style: S.legendLabel }, props.label),
-        ]),
-        h('span', { key: 'value', style: S.legendValue }, props.value),
-        h('span', { key: 'percent', style: S.legendPercent }, props.percent === undefined ? '' : `(${percentText(props.percent)})`),
+    function Ring({ percent }) {
+      const value = percent === undefined ? 0 : Math.max(0, Math.min(100, percent))
+      const hot = value >= 90
+      const stroke = hot ? 'var(--dsw-alias-state-error-primary, #e5484d)' : 'var(--cu-ring, #4d8df5)'
+      return h('svg', {
+        width: 16,
+        height: 16,
+        viewBox: '0 0 16 16',
+        'aria-hidden': 'true',
+        style: { flex: '0 0 auto' },
+      }, [
+        h('circle', {
+          key: 'track',
+          cx: 8,
+          cy: 8,
+          r: RING_RADIUS,
+          fill: 'none',
+          stroke: 'var(--cu-track)',
+          strokeWidth: 2,
+        }),
+        value > 0 ? h('circle', {
+          key: 'value',
+          cx: 8,
+          cy: 8,
+          r: RING_RADIUS,
+          fill: 'none',
+          stroke,
+          strokeWidth: 2,
+          strokeLinecap: 'round',
+          strokeDasharray: `${(value / 100) * RING_CIRCUMFERENCE} ${RING_CIRCUMFERENCE}`,
+          transform: 'rotate(-90 8 8)',
+        }) : null,
       ])
     }
 
     /**
-     * One whole-session figure: a small label beside a larger value.
-     * @param props - label and the large value text.
-     * @returns the stat cell.
+     * One legend chip.
+     * @param props - label, fill and ink variables, formatted value.
+     * @returns the chip.
      */
-    function StatCell(props) {
-      return h('div', { style: S.statCell }, [
-        h('span', { key: 'label', style: S.statLabel }, props.label),
-        h('span', { key: 'value', style: S.statValue }, props.value),
+    /** Compact line icons for the legend, one shape per bucket, drawn in the
+     *  bucket's own colour so the chips read like the shipped panel's did. */
+    const GLYPHS = {
+      system: [
+        ['rect', { x: 2.6, y: 2.6, width: 10.8, height: 10.8, rx: 2.2 }],
+        ['path', { d: 'M5.4 6.2h5.2' }],
+        ['path', { d: 'M5.4 9.4h3.2' }],
+      ],
+      tools: [
+        ['path', { d: 'M2.6 5.2h10.8' }],
+        ['path', { d: 'M2.6 10.8h10.8' }],
+        ['circle', { cx: 6.2, cy: 5.2, r: 1.7, fill: 'currentColor', stroke: 'none' }],
+        ['circle', { cx: 10.2, cy: 10.8, r: 1.7, fill: 'currentColor', stroke: 'none' }],
+      ],
+      tool: [
+        ['rect', { x: 2.6, y: 3.4, width: 10.8, height: 9.2, rx: 2 }],
+        ['path', { d: 'M5.4 6.1l1.95 1.85-1.95 1.85' }],
+        ['path', { d: 'M9.2 10h2.2' }],
+      ],
+      messages: [
+        ['rect', { x: 2.6, y: 3.4, width: 10.8, height: 7.6, rx: 2 }],
+        ['path', { d: 'M5.6 11v2.4l2.8-2.4' }],
+      ],
+      free: [
+        ['rect', { x: 2.6, y: 2.6, width: 10.8, height: 10.8, rx: 2.2, strokeDasharray: '2 2' }],
+      ],
+    }
+
+    function BucketGlyph({ kind, color }) {
+      const shapes = GLYPHS[kind] === undefined ? GLYPHS.system : GLYPHS[kind]
+      return h('svg', {
+        width: 14,
+        height: 14,
+        viewBox: '0 0 16 16',
+        fill: 'none',
+        stroke: 'currentColor',
+        strokeWidth: 1.4,
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        'aria-hidden': 'true',
+        style: { flex: '0 0 auto', color },
+      }, shapes.map(([tag, attrs], index) => h(tag, Object.assign({ key: index }, attrs))))
+    }
+
+    function Chip({ kind, label, color, value, title }) {
+      return h('span', { style: S.chip, title }, [
+        h(BucketGlyph, { key: 'glyph', kind, color }),
+        h('span', { key: 'label', style: S.chipLabel }, label),
+        h('span', { key: 'value', style: S.chipValue }, value),
       ])
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* Blocks                                                                 */
+    /* ---------------------------------------------------------------------- */
+
     /**
-     * The occupancy area: one cell per share of the window, tinted by the
-     * composition share it falls in, with unoccupied cells in the idle tint.
-     * @param usedPercent - occupancy of the window, absent before a sample.
-     * @param breakdown - heuristic composition, absent before a sample.
-     * @param total - the composition total.
-     * @returns one cell element per grid position.
+     * The single-band occupancy bar.
+     *
+     * Each band is painted in its light fill and opens with a short gradient
+     * from the band to its left, so neighbours melt instead of abutting. What
+     * this turn added is painted in the band's ink at the band's right edge —
+     * inside the band, never as a separate segment — with a soft left edge so
+     * the reading stays "this block grew", not "here is another block".
+     *
+     * @param props - the model.
+     * @returns the bar.
      */
-    function gridCells(usedPercent, breakdown, total) {
-      const cells = []
-      for (let index = 0; index < GRID_CELLS; index += 1) {
-        let color
-        if (usedPercent !== undefined && total > 0) {
-          const fraction = ((index + 0.5) / GRID_CELLS) * 100
-          if (fraction <= usedPercent) {
-            let cursor = 0
-            color = ROWS[ROWS.length - 1].color
-            for (const row of ROWS) {
-              cursor += ((breakdown[row.key] || 0) / total) * usedPercent
-              if (fraction <= cursor) {
-                color = row.color
-                break
-              }
-            }
-          }
-        }
-        cells.push(h('div', {
-          key: index,
-          style: color === undefined ? S.cell : Object.assign({}, S.cell, { background: color }),
-        }))
-      }
-      return cells
+    function OccupancyBar({ model, t }) {
+      const widthOf = (value) => `${Math.max(0, Math.min(100, (value / model.capacity) * 100))}%`
+      const painted = model.painted
+      const bands = painted.map((bucket) => {
+        const percent = share(bucket.value, model.capacity)
+        const label = `${t(bucket.label)} ${formatTokens(bucket.value)}${percent === undefined ? '' : ` · ${percentText(percent)}`}`
+        return h('div', {
+          key: bucket.key,
+          style: Object.assign({}, S.segment, {
+            width: widthOf(bucket.value),
+            background: `var(--cu-${bucket.key})`,
+          }),
+          title: label,
+          'data-bucket': bucket.key,
+        })
+      })
+      return h('div', {
+        style: S.bar,
+        role: 'img',
+        'aria-label': painted.map((bucket) => `${t(bucket.label)} ${formatTokens(bucket.value)}`).join(', '),
+      }, h('div', { key: 'layer', style: S.barLayer }, bands))
+    }
+
+
+    /**
+     * The token ledger: uncached, cached, hit rate, output.
+     * @param props - the `tokenUsage` projection value.
+     * @returns the ledger spans, separated by dots.
+     */
+    function Ledger({ usage, t }) {
+      if (usage === undefined) return null
+      const hit = share(usage.cacheReadTokens, (usage.cacheReadTokens || 0) + (usage.uncachedInputTokens || 0))
+      const cells = [
+        ['miss', formatTokens(usage.uncachedInputTokens)],
+        ['hit', formatTokens(usage.cacheReadTokens)],
+        ['output', formatTokens(usage.outputTokens)],
+        ['hitRate', hit === undefined ? '—' : percentText(hit)],
+      ]
+      const children = []
+      cells.forEach((cell, index) => {
+        if (index > 0) children.push(h('span', { key: `sep${index}`, style: S.muted }, '·'))
+        children.push(h('span', { key: cell[0] }, [
+          h('span', { key: 'label', style: S.statLabel }, t(cell[0])),
+          h('span', { key: 'value', style: S.statValue }, cell[1]),
+        ]))
+      })
+      return children
     }
 
     /**
-     * The shared card body, so the composer panel and a legacy command row
-     * cannot drift apart: the overview, the occupancy area and the composition
-     * legend, arranged for the width {@link Body} measured, with the session's
-     * turn/step pace in the overview (this bundle hides the shipped dock that
-     * used to carry it).
-     * @param props - locale seat, the projection values, the session stats, the
-     * chosen arrangement, and the ref its container is measured from.
-     * @returns the card's children.
+     * The card body.
+     * @param props - locale, the three projection values and session stats.
+     * @returns the bands.
      */
     function bodyChildren(props) {
-      const { t, pressure, breakdown, usage, session, layout, innerRef } = props
-      const used = pressure === undefined ? undefined : pressure.projectedTokens ?? pressure.pressureTokens
-      const capacity = pressure === undefined ? undefined : pressure.contextWindow
-      const usedPercent = share(used, capacity)
-      const total = breakdown === undefined ? 0 : breakdown.systemTokens + breakdown.toolsTokens + breakdown.messageTokens
+      const { t, pressure, detail, breakdown, usage, session } = props
+      const model = usageModel(pressure, detail, breakdown)
+
+      if (model === undefined) {
+        return [h('div', { key: 'empty', style: S.head }, [
+          h('span', { key: 'figure', style: S.figure }, '— / —'),
+          h('span', { key: 'hint', style: S.muted }, t('noSample')),
+        ])]
+      }
 
       const pace = []
       if (session !== undefined) {
@@ -1739,95 +2110,127 @@ window.__ModuleLoader__.load({
         }
       }
 
-      const legend = []
-      for (const row of ROWS) {
-        const value = breakdown === undefined ? undefined : breakdown[row.key]
-        legend.push(h(LegendCell, {
-          key: row.key, kind: row.kind, label: t(row.label), color: row.color,
-          value: formatTokens(value), percent: share(value, capacity),
+      const head = h('div', { key: 'head', style: S.head }, [
+        h('span', { key: 'figure', style: S.figure }, `${formatTokens(model.used)} / ${formatTokens(model.capacity)}`),
+        model.deltaTotal > 0
+          ? h('span', {
+            key: 'turn',
+            style: S.turnBadge,
+            title: `${t('turnNew')} ${formatTokens(model.deltaTotal)} · ${t('estimated')}`,
+          }, `${t('turnNew')} +${formatTokens(model.deltaTotal)}${share(model.deltaTotal, model.capacity) === undefined ? '' : ` (${percentText(share(model.deltaTotal, model.capacity))})`}`)
+          : null,
+        h('span', { key: 'spacer', style: S.spacer }),
+        h('span', { key: 'ledger', style: S.stats }, Ledger({ usage, t })),
+      ])
+
+      const chips = model.buckets
+        .filter((bucket) => bucket.value > 0)
+        .map((bucket) => h(Chip, {
+          key: bucket.key,
+          kind: bucket.key,
+          label: t(bucket.label),
+          color: `var(--cu-${bucket.key})`,
+          value: formatTokens(bucket.value),
+          title: `${t(bucket.label)} ${formatTokens(bucket.value)}${bucket.sources.length > 1 ? ` (${bucket.sources.map((key) => t(key)).join(' + ')})` : ''} · ${t('estimated')} ${formatTokens(bucket.raw)}`,
         }))
-      }
-      if (used !== undefined && capacity !== undefined) {
-        const free = Math.max(0, capacity - used)
-        legend.push(h(LegendCell, { key: 'free', kind: 'free', label: t('free'), color: FREE_COLOR, value: formatTokens(free), percent: share(free, capacity) }))
-      }
+      chips.push(h(Chip, {
+        key: 'free',
+        kind: 'free',
+        label: t('free'),
+        color: 'rgba(127, 127, 127, 0.55)',
+        value: formatTokens(model.free),
+        title: `${t('free')} ${formatTokens(model.free)} · ${percentText(share(model.free, model.capacity))}`,
+      }))
+      chips.push(h('span', { key: 'spacer', style: S.spacer }))
+      if (pace.length > 0) chips.push(h('span', { key: 'pace', style: S.pace }, pace.join(' · ')))
 
-      const stats = []
-      if (usage !== undefined) {
-        const hitRate = share(usage.cacheReadTokens, usage.cacheReadTokens + usage.uncachedInputTokens)
-        stats.push(h(StatCell, { key: 'miss', label: t('miss'), value: formatTokens(usage.uncachedInputTokens) }))
-        stats.push(h(StatCell, { key: 'hit', label: t('hit'), value: formatTokens(usage.cacheReadTokens) }))
-        stats.push(h(StatCell, { key: 'hitRate', label: t('hitRate'), value: hitRate === undefined ? '—' : percentText(hitRate) }))
-        stats.push(h(StatCell, { key: 'output', label: t('output'), value: formatTokens(usage.outputTokens) }))
-      }
-
-      const overview = h('div', { key: 'overview', style: S.headLeft }, [
-        h('div', { key: 'titleRow', style: S.headRow }, [
-          h(Ring, { key: 'ring', percent: usedPercent }),
-          h('span', { key: 'title', style: S.title }, t('title')),
-        ]),
-        h('div', { key: 'figures', style: S.headRow }, [
-          h('span', { key: 'figure', style: S.figure }, `${formatTokens(used)} / ${formatTokens(capacity)}`),
-          usedPercent === undefined ? null : h('span', { key: 'percent', style: S.percent }, String(Math.round(usedPercent)) + '%'),
-        ]),
-        pace.length === 0 ? null : h('div', { key: 'pace', style: S.pace }, pace.join(' · ')),
-      ])
-
-      // 新会话还没有任何请求样本：一行紧凑占位，不渲染零值网格/统计/图例。
-      if (capacity === undefined) {
-        return [
-          h('div', {
-            key: 'main',
-            ref: innerRef,
-            style: {
-              display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', minWidth: 0,
-            },
-          }, [
-            h(Ring, { key: 'ring', percent: undefined }),
-            h('span', { key: 'title', style: S.title }, t('title')),
-            h('span', { key: 'figure', style: S.figure }, '— / —'),
-            h('span', { key: 'hint', style: S.muted }, t('noSample')),
-          ]),
-        ]
-      }
-
-      const viz = h('div', { key: 'viz', style: layout === 'wide' ? S.viz : S.vizFull }, [
-        h('div', { key: 'grid', style: S.grid }, gridCells(usedPercent, breakdown, total)),
-        stats.length === 0 ? null : h('div', { key: 'stats', style: S.stats }, stats),
-      ])
-      const legendBox = breakdown === undefined
-        ? h('div', { key: 'legend', style: S.legendBox }, h('div', { style: S.muted }, t('noSample')))
-        : h('div', { key: 'legend', style: S.legendBox }, legend)
-
-      /* One band where it fits; otherwise the overview pairs with the legend and
-       * the occupancy area takes the band below them; otherwise all three stack. */
-      if (layout === 'medium') {
-        return [
-          h('div', { key: 'main', ref: innerRef, style: S.stack }, [
-            h('div', { key: 'pair', style: S.pair }, [overview, legendBox]),
-            viz,
-          ]),
-        ]
-      }
-      return [h('div', { key: 'main', ref: innerRef, style: layout === 'wide' ? S.main : S.stack }, [overview, viz, legendBox])]
+      return [
+        head,
+        h(OccupancyBar, { key: 'bar', model, t }),
+        h('div', { key: 'legend', style: S.legend }, chips),
+      ]
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* Slots                                                                  */
+    /* ---------------------------------------------------------------------- */
+
     /**
-     * The measurable body: it owns the ref its arrangement is measured from, and
-     * re-renders the blocks for the width that ref reports.
-     * @param props - locale seat and the projection values.
-     * @returns the card's children.
+     * Seat a band inside the shipped composer card, right above its button row.
+     *
+     * The card only exposes `conversation.input.overlay` (a zero-height,
+     * absolutely positioned anchor for popups) to third parties, so an in-flow
+     * seat has to be a portal: an anchored entry reserves a `display:none`
+     * marker in the composer stack, finds the neighbouring `[data-composer-card]`,
+     * and inserts a `display:contents` host before the card's last child (the
+     * `.row` that carries the permission chip and the submit button). Because the
+     * host generates no box, the band itself becomes the card's flex child and
+     * inherits its 12px column gap.
+     * @param props - `open` plus the band children.
+     * @returns the invisible marker and, while open, the portal.
      */
-    function Body(props) {
-      const [innerRef, width] = useMeasuredWidth()
-      return bodyChildren(Object.assign({ innerRef, layout: layoutFor(width) }, props))
+    function ComposerBandSeat(props) {
+      const { open, children } = props
+      const anchorRef = useRef(null)
+      const [host, setHost] = useState(undefined)
+
+      useEffect(() => {
+        if (!open) return undefined
+        const anchor = anchorRef.current
+        let scopeNode
+        let bandHost
+        let observer
+
+        const place = () => {
+          if (!anchor || !anchor.isConnected) return
+          let node = anchor.parentElement
+          let card
+          while (node !== null && node !== document.body) {
+            card = node.querySelector('[data-composer-card]')
+            if (card !== null && card !== undefined) break
+            node = node.parentElement
+          }
+          if (card === null || card === undefined) return
+          /* The control row carries the submit button; take the last direct child
+           * that does, so a session without one still lands somewhere sane. */
+          const children = Array.from(card.children).reverse()
+          const row = children.find(child => child.querySelector('button') !== null) ?? card.lastElementChild
+          if (row === null) return
+          if (bandHost !== undefined && bandHost.parentElement === card && bandHost.nextElementSibling === row) return
+          if (bandHost === undefined) {
+            bandHost = document.createElement('div')
+            bandHost.setAttribute('data-context-usage', 'band-host')
+            bandHost.style.display = 'contents'
+          }
+          card.insertBefore(bandHost, row)
+          setHost(bandHost)
+          if (node !== scopeNode) {
+            scopeNode = node
+            if (observer !== undefined) observer.disconnect()
+            observer = new MutationObserver(() => {
+              place()
+            })
+            observer.observe(scopeNode, { childList: true })
+          }
+        }
+
+        place()
+        return () => {
+          if (observer !== undefined) observer.disconnect()
+          if (bandHost !== undefined) bandHost.remove()
+        }
+      }, [open])
+
+      return h(React.Fragment, null,
+        h('span', { key: 'anchor', ref: anchorRef, style: { display: 'none' } }),
+        open && host !== undefined ? reactDom.createPortal(
+          h('div', { style: S.panel }, children), host) : null)
     }
 
     /**
-     * The occupancy panel the `/context` action and the composer button open,
-     * docked above the composer card with the shipped full-width docks.
+     * The occupancy panel the `/context` action and the composer button open.
      * @param props - the dock entry's standard session shares.
-     * @returns the panel, or null while it is closed.
+     * @returns the band inside the composer card, or null while it is closed.
      */
     function ContextUsagePanel(props) {
       const t = translator(props)
@@ -1835,13 +2238,13 @@ window.__ModuleLoader__.load({
       const sessionId = props ? props.sessionId : undefined
       const open = usePanelOpen(sessionId)
       const pressure = read('contextPressure')
+      const detail = read('contextUsage')
       const breakdown = read('contextBreakdown')
       const usage = read('tokenUsage')
       const session = read('sessionStats')
-      if (!open) return null
-      return h('div', { style: S.panel },
-        h('div', { style: S.panelCard, 'data-context-usage': 'panel' },
-          h(Body, { t, pressure, breakdown, usage, session })))
+      return h(ComposerBandSeat, { open },
+        h('div', { key: 'panel', style: S.panelCard, 'data-context-usage': 'panel' },
+          bodyChildren({ t, pressure, detail, breakdown, usage, session })))
     }
 
     /**
@@ -1856,8 +2259,10 @@ window.__ModuleLoader__.load({
       const read = projectionReader(props)
       const sessionId = props ? props.sessionId : undefined
       const open = usePanelOpen(sessionId)
-      const [hover, setHover] = React.useState(false)
-      const { usedPercent } = occupancyOf(read)
+      const [hover, setHover] = useState(false)
+      const pressure = read('contextPressure')
+      const used = pressure === undefined ? undefined : pressure.projectedTokens ?? pressure.pressureTokens
+      const percent = share(used, pressure === undefined ? undefined : pressure.contextWindow)
       return h('button', {
         type: 'button',
         style: open || hover ? Object.assign({}, S.toggle, S.toggleActive) : S.toggle,
@@ -1869,8 +2274,8 @@ window.__ModuleLoader__.load({
         onMouseEnter: () => setHover(true),
         onMouseLeave: () => setHover(false),
       }, [
-        h(Ring, { key: 'ring', percent: usedPercent }),
-        usedPercent === undefined ? null : h('span', { key: 'text' }, `${Math.round(usedPercent)}%`),
+        h(Ring, { key: 'ring', percent }),
+        percent === undefined ? null : h('span', { key: 'text' }, `${Math.round(percent)}%`),
       ])
     }
 
@@ -1885,26 +2290,35 @@ window.__ModuleLoader__.load({
       const t = translator(props)
       const read = projectionReader(props)
       const pressure = read('contextPressure')
+      const detail = read('contextUsage')
       const breakdown = read('contextBreakdown')
       const usage = read('tokenUsage')
       const session = read('sessionStats')
       const outcome = node ? node.outcome : null
-      const head = (right) => h('div', { key: 'head', style: S.head }, [
-        h(Ring, { key: 'ring', percent: right === undefined ? 0 : right }),
+      const head = h('div', { key: 'head', style: S.head }, [
+        h(Ring, { key: 'ring', percent: undefined }),
         h('span', { key: 'title', style: S.title }, t('title')),
-        h('span', { key: 'spacer', style: S.spacer }),
       ])
       if (outcome === null || outcome === undefined) {
-        return h('div', { style: S.card },
-          head(undefined),
-          h('div', { style: S.muted }, t('running')))
+        return h('div', { style: S.card }, head, h('div', { style: S.muted }, t('running')))
       }
       if (outcome.kind === 'error') {
-        return h('div', { style: S.card },
-          head(undefined),
+        return h('div', { style: S.card }, head,
           h('div', { style: S.error }, typeof outcome.text === 'string' && outcome.text.length > 0 ? outcome.text : t('failed')))
       }
-      return h('div', { style: S.card }, h(Body, { t, pressure, breakdown, usage, session }))
+      return h('div', { style: S.card, 'data-context-usage': 'card' },
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 } },
+          bodyChildren({ t, pressure, detail, breakdown, usage, session })))
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* Plugin                                                                 */
+    /* ---------------------------------------------------------------------- */
+
+    /* Test hook: `scripts/check-client.mjs` renders the body headlessly, so the
+     * bar widths and the rescaling can be checked without opening the panel. */
+    if (globalThis.__CU_TEST__ === true) {
+      globalThis.__CU_EXPORTS__ = { usageModel, bodyChildren, formatTokens, share }
     }
 
     return {
@@ -1912,6 +2326,19 @@ window.__ModuleLoader__.load({
       apply(ctx) {
         const tr = ctx.locale.bind(NS)
         ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'context-usage: dictionaries')
+
+        /* The six-bucket palette, in both themes. Scoped to `:root` because the
+         * composer toggle draws a ring too, and it lives outside the panel. */
+        ctx.effect(() => {
+          const tag = document.createElement('style')
+          tag.dataset.plugin = '@local/dsh-context-usage'
+          tag.dataset.pluginCss = PALETTE_STYLE_ID
+          tag.textContent = PALETTE_CSS
+          document.head.appendChild(tag)
+          return () => {
+            tag.remove()
+          }
+        }, 'context-usage: bucket palette')
 
         ctx.effect(() => ctx.commandUi.register({
           name: 'context',
@@ -1988,8 +2415,8 @@ window.__ModuleLoader__.load({
          */
         ctx.inject(['remote', 'remote.account'], (scope) => {
           function BalancePill() {
-            const [state, setState] = React.useState({ kind: 'pending' })
-            React.useEffect(() => {
+            const [state, setState] = useState({ kind: 'pending' })
+            useEffect(() => {
               let active = true
               const settle = (next) => {
                 if (active) setState(next)

@@ -28,3 +28,11 @@
 ## 验证
 
 作曲器出现「上下文用量」按钮；点开有分段占用与数字；`/context` 可用。
+
+## 2026-11-15 上游更新（1.1.3）
+
+- Host 半身从空实现变成真投影：`export const inject = ['sessionProjections']`、`PROJECTION_KEY = 'contextUsage'`，合并层会按导出的 `inject` 等 `sessionProjections` 就绪再加载。
+- 新增面板状态路由 `PANEL_ROUTE = '/__context-usage/panels'`，写 `~/.local/state/dsh-context-usage/panels.json`（按 sessionId、去抖 400ms、最多 200 条）。
+- 面板改为 React portal 嵌进作曲器卡片：锚点 `[data-composer-card]` + 最后一个含按钮的直接子元素；DSH 改结构时要跟着调。
+- `client.js` 46907B；`ctx.slots` 仍用 `conversation.input.dock`、`conversation.input.right`、`conversation.chat.commandview`、`conversation.composer.dock`。
+

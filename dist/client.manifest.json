@@ -4,14 +4,14 @@
     {
       "dir": "index-adjust",
       "file": "modules\\index-adjust\\client.js",
-      "bytes": 54670,
-      "sha256": "08e88f49730a70c3890b26598ba0154120c79f0ccd2076ede49195e58ef1d610"
+      "bytes": 61726,
+      "sha256": "b26f39c8ce9573c2660dd4b4d343e5b00128492f2c2a63799f43679f630bbfa7"
     },
     {
       "dir": "context-usage",
       "file": "modules\\context-usage\\client.js",
-      "bytes": 40171,
-      "sha256": "d865a2d3790da3f41fcb1bd039bf9f78def29bb3bcc28c97231a8432e1d59447"
+      "bytes": 46907,
+      "sha256": "20dffdfd7f6609ac0ad6857110fa309f280c9fdc8c0b21fd07e74de4e7c51730"
     },
     {
       "dir": "mcp-lazy",

@@ -27,7 +27,7 @@ const ACTIONS = [
   // 多步
   'batch', 'eval',
   // 控制权（激活 / 交还 / 查看）
-  'activate', 'deactivate', 'control',
+  'activate', 'deactivate', 'control', 'hold', 'ask',
   // 服务
   'server_status', 'server_restart',
 ]
@@ -406,7 +406,8 @@ export function classify(payload, errCode) {
   }
   // 控制权相关的错误：都不是"界面变了"，而是"这台机器现在不归你用"。
   if (code === 'CU_NOT_ACTIVATED' || code === 'CU_LEASE_EXPIRED' || code === 'CU_BUSY'
-    || code === 'CU_EMERGENCY_STOP' || code === 'CU_ACTIVATION_DENIED' || code === 'CU_PAUSED') {
+    || code === 'CU_EMERGENCY_STOP' || code === 'CU_ACTIVATION_DENIED' || code === 'CU_PAUSED'
+    || code === 'CU_NO_OVERLAY') {
     return 'control'
   }
   if (code === 'CU_COVERED' || code === 'CU_MINIMIZED' || code === 'CU_MOVED'
@@ -453,8 +454,12 @@ function textOf(value) {
 
 /** 观察类的 [next] 提示：对齐豆包 envelope.py 的 anti-repeat 指引。 */
 function nextHint(action, status, code = '') {
+  if (code === 'CU_NO_OVERLAY') {
+    return '[next] 屏幕上没有出现控制提示，所以现在没有控制权（硬规则）：'
+      + '再试一次 activate 不会有害；还起不来就停下，告诉用户"屏幕上没有出现控制提示，暂时不能接管电脑"。'
+  }
   if (code === 'CU_NOT_ACTIVATED') {
-    return '[next] 现在没有控制权：先 action="activate" 带 label（你是谁）并等用户同意，'
+    return '[next] 现在没有控制权：先 action="activate" 并等用户同意，'
       + '再重新做这个动作。别用别的参数重试同一个动作。'
   }
   if (code === 'CU_LEASE_EXPIRED') {
@@ -462,11 +467,11 @@ function nextHint(action, status, code = '') {
   }
   if (code === 'CU_BUSY') {
     return '[next] 另一个代理正持有控制权：不要抢。等它 deactivate，'
-      + '或请用户按 Ctrl+Alt+Shift+Backspace 急停收回。'
+      + '或请用户按 Ctrl+Alt+Shift+Backspace 手动关闭。'
   }
   if (code === 'CU_EMERGENCY_STOP') {
-    return '[next] 用户按了急停：立刻停手。不要重试、不要换 action 绕过；'
-      + '等用户明确说恢复后再 activate。'
+    return '[next] 用户手动关闭了电脑控制：立刻停手。这是即停即止——红边闪 3 秒后整个 cu 已经关闭，'
+      + '不要重试、不要换 action 绕过；需要再操作电脑时重新 activate，并等用户点同意。'
   }
   if (code === 'CU_ACTIVATION_DENIED') {
     return '[next] 用户拒绝了这次激活：不要马上再弹一次。先问清楚他希望你做什么。'
@@ -474,8 +479,7 @@ function nextHint(action, status, code = '') {
   if (code === 'CU_PAUSED') {
     return '[next] 用户按了暂停（或点了鲸鱼给你留言）：现在不该动键鼠。'
       + '看看结果里有没有 [提示] 用户留言；没有就先停下，等用户按 Ctrl+Shift+Alt 恢复，别重试。'
-  }
-  if (code === 'CU_CONFIRM_REQUIRED') {
+  }  if (code === 'CU_CONFIRM_REQUIRED') {
     return '[next] 这是破坏性动作：先把"会丢掉什么"告诉用户，得到明确同意后再用 confirm:true 重试。'
   }
   if (status === 'state_changed') {
@@ -499,27 +503,39 @@ function nextHint(action, status, code = '') {
   return ''
 }
 
-const DESCRIPTION = `操作这台 Windows 桌面：截图、鼠标键盘、窗口/应用、剪贴板、UIA 元素、后台凝视、多步执行。
-坐标一律 0-1000 归一化（region / element_at 例外，吃物理像素）。动作名单见 action 枚举，这里不重复。
+const DESCRIPTION = `操作这台 Windows 桌面：截图、鼠标键盘、窗口与应用、剪贴板、元素识别、多步执行。
+坐标一律 0-1000 归一化（region / element_at 例外，吃物理像素）。
 
-**用之前必须先激活**：会动键鼠/夺焦点的动作在未激活时一律被 CU_NOT_ACTIVATED 拦下。流程是：
-1. action="activate"，带 label:"<你是谁，例如 主 agent / 子 agent-xxx>"。屏幕上会弹一张卡片，写明"哪个会话、哪个目录"要用电脑；30 秒没有回应按"同意"处理。屏幕四边会亮琥珀色，右下角出现一个鲸鱼标志。
-2. 一次激活做完整个任务，不要每步重新激活。激活期间用户手动碰鼠标键盘多半是在帮你（点弹窗、扫码登录）：看到"用户正在操作"的提示就停手观察，等用户停手再继续，别抢回控制。
-3. 任务完成必须 action="deactivate" 交还控制权：屏幕上的提示会立刻全部消失，并一句话告诉用户"已交还，你可以正常操作了"。
-4. 只读动作（shot/windows/apps/find/wait/state_capture 等）不需要激活，随时可看。
-5. 用户有三个开关，都是他自己按的，你都不能代劳：
-   - Ctrl+Alt+Shift+Backspace 急停：立刻断掉一切控制。之后所有动作返回 CU_EMERGENCY_STOP，不要重试、不要绕过。
-   - Ctrl+Shift+Alt 暂停：保留控制权但停止注入，用户在看/在操作。之后的动作返回 CU_PAUSED；若结果里带 [提示] 用户留言，先照他说的调整。
-   - 点右下角的鲸鱼：等于"暂停 + 给 agent 留言"。留言会作为 [提示] 出现在你下一次调用结果里。看到留言就先回应或调整，再继续。
-6. 用户按了急停后再按一次是"解除"，解除了也必须重新 activate 且重新得到同意。
+**怎么用**
+1. 动手前 action="activate"：屏幕上会出现一张卡片，写明是哪个会话要用电脑，30 秒没回应按同意处理；随后屏幕四边亮蓝、右下角出现鲸鱼标志。一次激活做完整个任务，不要每步重开。
+2. 只看不动的动作（shot / windows / apps / find / wait / state_capture）不需要激活。
+3. 要等用户下一步指令，用 action="hold" 挂着（一次最多 55 秒），别把回合结束掉——结束了他再说话就递不进来。
+4. 需要用户亲自输入或决定（密码、验证码、选哪个选项），用 action="ask" 并带 text 说明。cu 会自动暂停，用户答完自动继续，你不用重问。
+5. 干完必须 action="deactivate"：界面交还给用户，屏幕上的提示全部消失。之后要再用，重新 activate。
 
-纪律：除工具调用外不输出文字；单步任务思维链 ≤1 行，需要先规划时才展开（详见 computer-use 技能）。
-看屏幕用 action="shot"（直接回图片、不落盘）；只看布局不读小字时给 long:800，图像 token 省一半。
-会改变布局的动作（开菜单/对话框/切标签/滚动）之后，下一步坐标必须重新观察。
-能用 API / 命令行完成的事不要走 GUI；网页内操作用 browser_use，别用本工具。
-需要登录 / 验证码 / MFA 时：不要硬试，叫用户接管。`
+**用户会随时打断，这是他的权利，不是故障**
+- Ctrl+Shift+Alt：暂停/恢复。暂停期间你的动作会被拒绝（CU_PAUSED），不要重试、不要绕，等恢复或等用户的话。
+- Ctrl+Alt+Shift+Backspace：手动关闭。cu 直接结束，不会自动恢复；要再用必须重新 activate 并等用户同意。
+- 点右下角鲸鱼：暂停并给用户一个留言框，他写完你会在下一次结果里看到。
+
+**读结果**
+- [提示] 开头的是用户的话（暂停/恢复/留言/对你提问的回答），照做，别当噪声。
+- [next] 是下一步建议；status 不是 ok 时先看它，不要重复同一个失败调用。
+
+纪律：除工具调用外不输出文字；单步任务思维链 ≤1 行。动作会改变布局（开菜单/切标签/滚动）后，先重新观察再点。
+能用 API 或命令行完成的事不必走 GUI；网页内的操作用 browser_use。`
 
 export function createComputerUseTool({ manager, attachments, sessions }) {
+  // 用户留言的投递确认：服务端「显示过」不算数，只有我们把它拼进了工具结果、
+  // 模型真能看到，下一次请求才回 ack，服务端这时才删。否则留言会因为某个
+  // 分支没渲染而永久丢失（2026-11-14 实测丢过两条）。
+  let ackNoticeId = null
+  const withAck = (payload) => (ackNoticeId ? { ...payload, ack_notice: ackNoticeId } : payload)
+  const trackNotice = (json) => {
+    const ids = json && json.notice_ids
+    if (Array.isArray(ids) && ids.length) ackNoticeId = ids
+  }
+
   const parameters = {
     type: 'object',
     properties: {
@@ -540,7 +556,7 @@ export function createComputerUseTool({ manager, attachments, sessions }) {
       keepAll: { type: 'boolean', description: '截图不清理旧文件' },
       out: { type: 'string', description: '截图/文本落盘路径（不给就不落盘）' },
       pattern: { type: 'string', description: 'windows/rect/focus/apps/find 的匹配串' },
-      label: { type: 'string', description: 'activate 时必填：你是谁（例如 "主 agent" / "子 agent-代码审查"）。它决定冲突提示里显示"谁在用"' },
+      label: { type: 'string', description: '可选，不用填：身份以会话 id + 工作目录为准，冲突提示里显示的就是这个。' },
       idle_ttl: { type: 'number', description: 'activate 可选：空闲多少秒后自动收回控制权（默认 120）' },
       max_ttl: { type: 'number', description: 'activate 可选：单次激活最长多少秒（默认 1800）' },
       reason: { type: 'string', description: 'deactivate 的原因（会写进审计）' },
@@ -631,35 +647,126 @@ export function createComputerUseTool({ manager, attachments, sessions }) {
     async execute(args, exec) {
       const action = args?.action
 
+      // ---- 主动向用户要东西（密码 / 验证码 / 选哪个按钮）----
+      // 与"点鲸鱼"同一个通道，只是由模型发起：先挂起 cu（不是关掉、也不是结束会话），
+      // 再把问题同时写在顶部横幅和递话框里。用户答完自动恢复并继续。
+      if (action === 'ask') {
+        const text = String(args?.text || '').trim().slice(0, 400)
+        if (!text) {
+          return {
+            status: 'invalid_action',
+            text: '[CU_BAD_ARG] ask 必须带 text：一句话说清需要用户做什么。',
+            next: '[next] 例如 text="需要你输入这页的登录密码"。',
+          }
+        }
+        let resp
+        try {
+          resp = await manager.call('ask', withAck({ text }), { timeoutMs: 15000 })
+        } catch (e) {
+          if (e instanceof CuIpcError) {
+            return {
+              status: 'error',
+              text: `[${e.code || 'CU_IPC'}] ${e.message}`,
+              next: '[next] 服务不可用；控制权大概率已经没了，别再操作电脑。',
+            }
+          }
+          throw e
+        }
+        const json = resp.json || {}
+        if (!json.ok) {
+          const code = json.code || 'CU_UNEXPECTED'
+          return { status: classify(null, code), text: `[${code}] ${String(json.message || '').trim()}`, next: nextHint(action, 'control', code) }
+        }
+        trackNotice(json)
+        return {
+          status: 'ok',
+          text: `已暂停 cu 并向用户提问：${text}\n`
+            + '用户回答后会以 [提示] 回来（形如「cu 已恢复，用户有新指令：…」）；'
+            + '他也可以按 Ctrl+Shift+Alt 直接恢复。在那之前不要动键鼠。',
+          next: '[next] 想继续挂着等就用 action="hold"；用户答完再继续操作。',
+        }
+      }
+
+      // ---- 挂着等用户说话（cu 开着时不许静默结束回合）----
+      // 服务端长轮询：有新留言、控制权没了、或超时才返回。挂在这里不烧 token，
+      // 用户一说话就带着原话回来，回合自然续上。
+      if (action === 'hold') {
+        const seconds = Math.min(Math.max(Number(args?.seconds) || 45, 5), 55)
+        let resp
+        try {
+          resp = await manager.call('wait', withAck({ seconds }), { timeoutMs: (seconds + 20) * 1000 })
+        } catch (e) {
+          if (e instanceof CuIpcError) {
+            return {
+              status: 'error',
+              text: `[${e.code || 'CU_IPC'}] ${e.message}`,
+              next: '[next] 常驻服务不可用了。用 action="server_status" 看一眼；控制权大概率已经没了，别再操作电脑。',
+            }
+          }
+          throw e
+        }
+        const json = resp.json || {}
+        if (!json.ok) {
+          const code = json.code || 'CU_UNEXPECTED'
+          return { status: classify(null, code), text: `[${code}] ${String(json.message || '').trim()}`, next: '' }
+        }
+        const v = json.value || {}
+        const items = Array.isArray(v.items) ? v.items : []
+        const lines = []
+        if (items.length) {
+          lines.push(`用户在你控制电脑期间发来 ${items.length} 条：`)
+          for (const it of items) lines.push(`- ${String(it.text || '').trim()}`)
+        } else {
+          lines.push(`这 ${Math.round(v.seconds || seconds)} 秒内用户没有新指令。`)
+        }
+        if (v.closed || !v.active) {
+          lines.push('控制权已经不在了（用户手动关闭、闲置收回或已交还）——停止操作电脑；需要时重新 activate 并等用户同意。')
+        } else {
+          lines.push(`控制权仍在（租约持有者 ${v.owner}）${v.paused ? '，用户当前暂停中' : ''}。`)
+        }
+        trackNotice(json)
+        // 这些留言已经当面给模型了，从队列里摘掉，免得下一次又重复递一遍。
+        if (items.length) {
+          try {
+            await manager.call('messages', { ack: items.map((i) => i.id) }, { timeoutMs: 3000 })
+          } catch { /* ack 失败不影响这一次返回 */ }
+        }
+        return {
+          status: 'ok',
+          text: lines.join('\n') + (json.notice ? `\n\n[提示] ${json.notice}` : ''),
+          next: v.active ? '[next] 还没收尾就再 action="hold" 挂一轮；干完了就 deactivate。' : '',
+        }
+      }
+
       // ---- 控制权：激活 / 交还 / 查看 ----
       // 状态存在 Python 常驻服务里（进程级单例），所以同一台机器上所有会话共享一把钥匙：
-      // 谁先 activate 谁持有；别人再来会拿到 CU_BUSY，提示里带持有者 label。
+      // 谁先 activate 谁持有；别人再来会拿到 CU_BUSY，提示里带持有者（会话 id）。
       if (action === 'activate' || action === 'deactivate' || action === 'control') {
         const label = String(args?.label || '').trim().slice(0, 60)
         // 用户最想知道的是"哪个会话在用我的电脑"。Agent 只有 id，目录要从 session header 里取。
         const sessionId = String(exec?.agent?.id || '')
         const cwd = String(sessions?.get?.(exec?.agent?.id)?.header?.cwd || exec?.cwd || '')
-        if (action === 'activate' && !label) {
+        if (action === 'activate' && !sessionId && !label) {
           return {
             status: 'invalid_action',
-            text: '[CU_BAD_ARG] activate 必须带 label：写明你是谁，冲突时用户要靠它知道"谁在用"。',
-            next: '[next] 补上 label（例如 label:"主 agent"）再试。',
+            text: '[CU_BAD_ARG] activate 拿不到会话身份：宿主没给 session id，也没给 label。',
+            next: '[next] 这不是你能补的：报告给用户，重启 DSH 让宿主把会话 id 带上。',
           }
         }
         let resp
         try {
           if (action === 'activate') {
-            resp = await manager.call('activate', {
-              owner: label,
+            resp = await manager.call('activate', withAck({
+              owner: sessionId || label,
               session: sessionId,
               cwd,
               idle_ttl: N(args?.idle_ttl),
               max_ttl: N(args?.max_ttl),
-            }, { timeoutMs: 45000 })
+            }), { timeoutMs: 45000 })
           } else if (action === 'deactivate') {
-            resp = await manager.call('deactivate', { reason: S(args?.reason) }, { timeoutMs: 20000 })
+            resp = await manager.call('deactivate', withAck({ reason: S(args?.reason) }), { timeoutMs: 20000 })
           } else {
-            resp = await manager.call('control', {}, { timeoutMs: 10000 })
+            resp = await manager.call('control', withAck({}), { timeoutMs: 10000 })
           }
         } catch (e) {
           if (e instanceof CuIpcError) {
@@ -680,6 +787,7 @@ export function createComputerUseTool({ manager, attachments, sessions }) {
         }
         const v = json.value || {}
         const notice = json.notice ? `\n\n[提示] ${json.notice}` : ''
+        trackNotice(json)
         if (action === 'control') {
           const c = v.control || {}
           const hk = v.hotkeys || {}
@@ -687,11 +795,11 @@ export function createComputerUseTool({ manager, attachments, sessions }) {
           return {
             status: 'ok',
             text: [
-              `控制权：${c.enabled ? '可用' : '已关闭'}${c.emergency ? '（急停中）' : ''}${c.paused ? '（用户已暂停）' : ''}`,
+              `控制权：${c.enabled ? '可用' : '已关闭'}${c.emergency ? '（已手动关闭）' : ''}${c.paused ? '（用户已暂停）' : ''}`,
               `租约：${c.active
                 ? `代理「${c.owner}」持有；空闲剩 ${Math.round(c.idle_left || 0)}s，单次剩 ${Math.round(c.max_left || 0)}s`
                 : '空闲（用户在用）'}`,
-              `热键：${hk.polling_ok ? '已启用' : '未启用'}  急停=${hk.emergency || 'Ctrl+Alt+Shift+Backspace'}`
+              `热键：${hk.polling_ok ? '已启用' : '未启用'}  手动关闭=${hk.emergency || 'Ctrl+Alt+Shift+Backspace'}`
                 + `  暂停=${hk.pause || 'Ctrl+Shift+Alt'}  同意=${hk.agree || 'Ctrl+Alt+Shift+Enter'}`,
               `提示层：${ov.running ? '运行中' : `未运行${ov.error ? `（${ov.error}）` : ''}`}`,
             ].join('\n') + notice,
@@ -702,16 +810,20 @@ export function createComputerUseTool({ manager, attachments, sessions }) {
           return {
             status: 'ok',
             text: `已激活：持有者「${v.owner || label}」；空闲 ${Math.round(v.idle_ttl || 0)}s 后自动收回，`
-              + `单次上限 ${Math.round(v.max_ttl || 0)}s。用户屏幕边缘已亮琥珀色。`
+              + `单次上限 ${Math.round(v.max_ttl || 0)}s。用户屏幕边缘已亮蓝色。`
               + (v.reused ? '\n（续用已有租约，没有重复打扰用户）' : '')
-              + (v.auto ? '\n（30 秒没有回应，按默认同意放行）' : `\n（用户等了 ${v.waited ?? 0}s 才点同意）`) + notice,
+              + (v.auto ? '\n（30 秒没有回应，按默认同意放行）' : `\n（用户等了 ${v.waited ?? 0}s 才点同意）`)
+              + '\n用户可能在这期间自己动鼠标键盘帮你或纠正你（也可能是误触）：看到屏幕变得不对就先看、再判断，别抢回去。'
+              + notice,
             next: '',
           }
         }
         return {
           status: 'ok',
           text: (v.deactivated
-            ? `已交还控制权（持有者「${v.owner || ''}」，原因：${v.reason || '未填写'}）。用户现在可以正常用鼠标键盘。`
+            ? `已交还控制权（持有者「${v.owner || ''}」，原因：${v.reason || '未填写'}）。`
+              + (v.closed ? 'DSH 已切回前台，电脑控制完全关闭（提示层与热键都已退出）。'
+                : '用户现在可以正常用鼠标键盘。')
             : '当前本来就没有控制权，无需交还。') + notice,
           next: '',
         }
@@ -758,12 +870,12 @@ export function createComputerUseTool({ manager, attachments, sessions }) {
         if (mapped.op === 'eval') {
           // eval 可能跑很久：单独放宽 IO 超时到它的 timeout+10s
           const t = Number(mapped.payload.timeoutMs) || 20000
-          resp = await mgr.call('eval', mapped.payload, { timeoutMs: t + 10000 })
+          resp = await mgr.call('eval', withAck(mapped.payload), { timeoutMs: t + 10000 })
         } else if (mapped.op === 'shot') {
-          resp = await mgr.call('shot', mapped.payload, { binary: true, timeoutMs: 60000 })
+          resp = await mgr.call('shot', withAck(mapped.payload), { binary: true, timeoutMs: 60000 })
         } else {
           const t = action === 'batch' ? 300000 : 120000
-          resp = await mgr.call(mapped.op, mapped.payload, { timeoutMs: t })
+          resp = await mgr.call(mapped.op, withAck(mapped.payload), { timeoutMs: t })
         }
       } catch (e) {
         if (e instanceof CuIpcError) {

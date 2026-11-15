@@ -69,12 +69,19 @@ expand/scroll_into_view）走 UI Automation，不依赖坐标。
   30 秒没回应按"同意"处理。**不要自己再写一段"要不要我操作你的电脑"去问**，横幅就是问。
 - 一次激活做完整任务，别每步重新激活。用户中途碰键鼠多半是在帮你（点弹窗、扫码登录）：
   看到"用户正在操作"的提示就停手观察，等他停手再继续，别抢回控制。
-- 做完**必须** `deactivate{reason:"..."}`，并跟用户说一句"已交还，你可以正常操作了"。
-  交还后边缘光、光标圆、右下鲸鱼会立刻全部消失——用户看不到特效，就表示可以接管了。
-- 用户按 `Ctrl+Shift+Alt` 是**暂停**：动作返回 `CU_PAUSED`，租约还在，别重试、别抢回来，
-  等用户恢复（再按一次）或给个回话。
-- 用户按 `Ctrl+Alt+Shift+Backspace` 是**急停**：`CU_EMERGENCY_STOP`，立刻停手，不要重试或绕过；
-  再按一次解除，但控制权不会自动恢复，要用得重新 `activate`。
+- 做完**必须** `deactivate{reason:"..."}`：DSH 窗口会切回前台，特效全部消失，**整个 cu 随之退出**
+  （不是退后台）。跟用户说一句"已交还并把电脑控制关掉了"。下次要操作电脑，重新 `activate`。
+- **控制权可以跨回合**：激活一次可以接多条指令，不必每回合重开。代价是它一直挂着提示，
+  所以"任务真的做完了"就当场 `deactivate`，别留着当常驻。兜底在服务端：空闲 2 分钟没有 cu 调用、
+  或单次激活超过 30 分钟，服务会自己收权并退出，下一次 `activate` 会告诉你上次为什么被关。
+- 长任务或需要待命等项目方指令时，可以放宽时限：`activate{idle_ttl:<秒>, max_ttl:<秒>}`
+  （空闲 2–1800、单次 60–28800），跑完照样要 `deactivate`；不传就用默认 120 / 1800。
+  用户在等你干活时发的留言、按的暂停，都算"有交互"，会续上空闲计时。
+- 用户按 `Ctrl+Shift+Alt` 是**暂停**（按住三键再松开）：动作返回 `CU_PAUSED`，租约还在，
+  别重试、别抢回来，等用户恢复（再按一次）或给个回话。
+- 用户按 `Ctrl+Alt+Shift+Backspace` 是**手动关闭**，即停即止：边框变红 3 秒、广播"用户手动关闭了"，
+  3 秒后整个 cu 关闭。你下一次调用会是新实例的 `CU_NOT_ACTIVATED`（不再是 `CU_EMERGENCY_STOP`），
+  不要重试、不要绕过；要恢复必须重新 `activate` 并等用户点同意。没有"再按一次解除"这回事。
 - 屏幕右下角有 DeepSeek 鲸鱼图标：用户点它可以直接给你留言（期间自动暂停），
   留言会以 `[提示]` 附在你下一次工具结果里——看到就照做，别当噪音。
 - `control` 可查当前谁持有控制权、是否被暂停、还剩多少时间。
@@ -83,7 +90,7 @@ expand/scroll_into_view）走 UI Automation，不依赖坐标。
 `invalid_action` 改参数；`state_changed` 重新观察（别用旧坐标/旧 ref）；
 `blocked` 是系统限制或要确认（UIPI/锁屏→请用户接管；confirm 闸→说清后果再确认）；
 `timeout` 换策略或 server_restart。错误码 `[CU_XXX]` 稳定，`codes` 能列全部。
-`control` 类不是界面问题：`CU_NOT_ACTIVATED` 先 activate；`CU_BUSY` 等别人交还或请用户急停；
-`CU_EMERGENCY_STOP` 停手等用户恢复；`CU_PAUSED` 等用户点继续或回话；`CU_LEASE_EXPIRED` 重新 activate。
+`control` 类不是界面问题：`CU_NOT_ACTIVATED` 先 activate；`CU_BUSY` 等别人交还或请用户手动关闭；
+`CU_EMERGENCY_STOP` 停手——服务会在 3 秒内关掉；`CU_PAUSED` 等用户点继续或回话；`CU_LEASE_EXPIRED` 重新 activate。
 登录/验证码/MFA/选文件：用 ask_user_question 请用户接管，不要硬试或绕过。
 

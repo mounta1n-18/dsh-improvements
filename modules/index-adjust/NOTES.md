@@ -53,3 +53,9 @@
 2. 冷启动后 `GET /dsh-index-adjust/state` 带 `x-dsh-index-adjust: 1`，`compat.supported` 为 true；
 3. 复制一个会话到另一个工作区，重开 DSH 看历史、标题、时间线；
 4. 故意让目标目录不可写，确认原样回滚且备份还在。
+
+## 2026-11-15 上游更新（1.3.11）
+
+- 新增「折叠工作区状态点」：折叠的工作区卡片显示子会话状态，纯 Client 改动（`shell.overlay` 的两个注册不变）。
+- Host 的路由、`compat` 字段、版本锁（`SUPPORTED_DSH_VERSION = '0.2.2-rc.3'`）均未变；`client.js` 61726B。
+

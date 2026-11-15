@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.0 — 2026-11-15
+
+同步五个上游的新版本；对外仍是单包单行。
+
+### 模块更新
+
+- **index-adjust 1.3.11**：新增「折叠工作区状态点」——折叠的工作区卡片显示子会话状态（完成/警告/错误/进行中），随行滚动淡出、不改列表高度；「更改工作区 / 重连工作区」不变，仍只认 DSH 0.2.2-rc.3。
+- **context-usage 1.1.3**：面板开合状态跨重启保留（Host 写 `~/.local/state/dsh-context-usage/panels.json`）；面板用 React portal 嵌进作曲器卡片内部；Host 半身新增 `contextUsage` 投影，按事件流分段计价并用 `contextPressure` 校正。
+- **computer-use**：新增回合守卫——cu 还握着控制权时，回合结束会把会话拽回来继续 `hold`，避免控制权空挂；新增留言轮询，用 `agent.followup()` 把鲸鱼留言送到模型面前（以前会话睡着就永远收不到）。
+- `destructive-guard` 1.1.0 与 `mcp-lazy` 0.1.0 本轮无变化（guard 的 ask→deny 降级已在 0.1.0 并入）。
+
+### 装配与文档
+
+- 合并 client 扩到 126249B，三个浏览器模块（index-adjust / context-usage / mcp-lazy）仍共用一个 `ModuleLoader` 入口，各自 `apply` 独立 try/catch。
+- `sync-modules.mjs` 在上游无变化时不再重写 `UPSTREAM.json`，减少无意义 diff。
+- README / INSTALL 增加「条件收敛」依赖清单：DSH 版本、Windows、Python + Pillow、Chrome，以及缺项时哪个模块降级。
+
+### 已知问题
+
+- 同 0.1.1；`index-adjust` 仍与 DSH 0.2.2-rc.3 强绑定。
+- `computer-use` 的回合守卫依赖 `agent.followup` 与 `agent/turn-stopping`，上游改签名时要跟着调。
+
 ## 0.1.1 — 2026-11-14
 
 并入 **index-adjust 1.1.0**，五个模块齐了。

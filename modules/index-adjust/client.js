@@ -148,23 +148,30 @@ window.__ModuleLoader__.load({
 .dshia-cardTitle{font-size:12px;line-height:18px;font-weight:600}
 .dshia-cardPath{font-size:11px;line-height:17px;color:var(--dsw-alias-label-secondary,#6b7280);word-break:break-all;margin-top:2px}
 .dshia-empty{font-size:12px;line-height:19px;color:var(--dsw-alias-label-secondary,#6b7280);padding:12px 2px}
-.dshia-folder-dot-layer{position:fixed;inset:0;z-index:20;overflow:hidden;pointer-events:none}
-.dshia-folder-dots{display:inline-flex;align-items:center;gap:2px;flex:none;margin-left:3px;pointer-events:none;vertical-align:middle}
-.dshia-folder-dots-floating{position:absolute;display:flex;margin:0;transform:translateY(-50%)}
-.dshia-folder-dot{position:relative;display:inline-block;flex:none;width:10px;height:10px;color:var(--dsw-alias-state-idle-primary)}
-.dshia-folder-dot::after{content:"";position:absolute;inset:20%;border-radius:50%;corner-shape:round;background:currentColor}
-.dshia-folder-dot[data-state="done"]{color:var(--dsw-alias-state-success-primary)}
-.dshia-folder-dot[data-state="warning"]{color:var(--dsw-alias-state-warn-primary)}
-.dshia-folder-dot[data-state="error"]{color:var(--dsw-alias-state-error-primary)}
-.dshia-folder-dot[data-state="idle"]{color:var(--dsw-alias-state-idle-primary)}
-.dshia-folder-spinner{flex:none;color:var(--dsw-alias-label-tertiary)}
-.dshia-folder-spinner-motion{transform-origin:center;animation:dshia-folder-spin 1.5s linear infinite}
-.dshia-folder-spinner-track,.dshia-folder-spinner-arc{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-.dshia-folder-spinner-track{opacity:.25}
-.dshia-folder-spinner-arc{stroke-dasharray:12 150;animation:dshia-folder-dash 1.5s ease-in-out infinite}
-@keyframes dshia-folder-spin{to{transform:rotate(360deg)}}
-@keyframes dshia-folder-dash{0%{stroke-dasharray:12 150;stroke-dashoffset:0}50%{stroke-dasharray:24 150;stroke-dashoffset:-6}to{stroke-dasharray:12 150;stroke-dashoffset:0}}
-@media (prefers-reduced-motion:reduce){.dshia-folder-spinner-motion,.dshia-folder-spinner-arc{animation:none}.dshia-folder-spinner-arc{stroke-dasharray:18 150;stroke-dashoffset:-3}}
+[data-row-key^="workspace:"]{position:relative}
+.dshia-folder-badges{position:absolute;display:inline-flex;align-items:center;gap:2px;white-space:nowrap;pointer-events:none;z-index:2}
+.dshia-folder-ball{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;aspect-ratio:1/1;box-sizing:border-box;border-radius:999px;corner-shape:round;font-size:9px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--dsw-specific-sidebar-fill,#fff)}
+.dshia-folder-ball--solo{width:7px;height:7px}
+.dshia-folder-pill{display:inline-flex;align-items:center;justify-content:center;height:13px;min-width:20px;padding:0 5px;box-sizing:border-box;border-radius:999px;font-size:9px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--dsw-specific-sidebar-fill,#fff)}
+.dshia-folder-ball[data-state="done"],.dshia-folder-pill[data-state="done"]{background:var(--dsw-alias-state-success-primary,#1a9b63)}
+.dshia-folder-ball[data-state="warning"],.dshia-folder-pill[data-state="warning"]{background:var(--dsw-alias-state-warn-primary,#c98a00)}
+.dshia-folder-ball[data-state="error"],.dshia-folder-pill[data-state="error"]{background:var(--dsw-alias-state-error-primary,#d33)}
+.dshia-folder-capsule{display:inline-flex;align-items:stretch;height:14px;box-sizing:border-box;border-radius:999px;overflow:hidden;box-shadow:0 0 0 1px var(--dsw-specific-sidebar-fill,transparent)}
+.dshia-folder-capsulePart{display:inline-flex;align-items:center;justify-content:center;min-width:22px;padding:0 8px;box-sizing:border-box;font-size:9px;font-weight:600;line-height:1;letter-spacing:.2px;font-variant-numeric:tabular-nums;color:var(--dsw-specific-sidebar-fill,#fff)}
+.dshia-folder-capsule[data-parts="3"] .dshia-folder-capsulePart{min-width:25px;padding:0 9px}
+.dshia-folder-capsulePart + .dshia-folder-capsulePart{box-shadow:inset 1px 0 0 color-mix(in srgb,var(--dsw-specific-sidebar-fill,#fff) 35%,transparent)}
+.dshia-folder-capsulePart[data-state="done"]{background:var(--dsw-alias-state-success-primary,#1a9b63)}
+.dshia-folder-capsulePart[data-state="warning"]{background:var(--dsw-alias-state-warn-primary,#c98a00)}
+.dshia-folder-capsulePart[data-state="error"]{background:var(--dsw-alias-state-error-primary,#d33)}
+.dshia-folder-spinner{flex:none;width:14px;height:14px;margin-left:4px;margin-right:4px;color:var(--dsw-alias-label-tertiary,#81858c)}
+.dshia-folder-spinner svg{display:block;width:14px;height:14px}
+.dshia-folder-spinnerMotion{transform-origin:center;animation:dshia-state-dot-spin 1.5s linear infinite}
+.dshia-folder-spinnerTrack,.dshia-folder-spinnerArc{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.dshia-folder-spinnerTrack{opacity:.25}
+.dshia-folder-spinnerArc{stroke-dasharray:12 150;animation:dshia-state-dot-dash 1.5s ease-in-out infinite}
+@keyframes dshia-state-dot-spin{to{transform:rotate(360deg)}}
+@keyframes dshia-state-dot-dash{0%{stroke-dasharray:12 150;stroke-dashoffset:0}50%{stroke-dasharray:24 150;stroke-dashoffset:-6}to{stroke-dasharray:12 150;stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.dshia-folder-spinnerMotion,.dshia-folder-spinnerArc{animation:none}.dshia-folder-spinnerArc{stroke-dasharray:18 150;stroke-dashoffset:-3}}
 .dshia-spinner{width:15px;height:15px;border:2px solid var(--dsw-alias-border-l2,rgba(0,0,0,.12));border-top-color:var(--dsw-alias-brand-primary,#4d6bfe);border-radius:50%;animation:dshia-spin .75s linear infinite;display:inline-block;vertical-align:-3px;margin-right:7px}
 .dshia-loading{font-size:12px;line-height:19px;color:var(--dsw-alias-label-secondary,#6b7280);padding:10px 2px}
 .dshia-footer{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 20px 18px;border-top:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.06))}
@@ -330,7 +337,7 @@ window.__ModuleLoader__.load({
 
     /** @param {any} statuses @param {string} sessionId */
     function statusFor(statuses, sessionId) {
-      if (statuses instanceof Map) return statuses.get(sessionId)
+      if (statuses !== null && typeof statuses?.get === 'function') return statuses.get(sessionId)
       return statuses?.[sessionId]
     }
 
@@ -353,44 +360,63 @@ window.__ModuleLoader__.load({
     }
 
     /**
-     * Recreate the native StateDot: a 10px box whose ::after paints a 6px dot,
-     * or the native 14px spinner for `ongoing`. Colors come from the same DSH
-     * state tokens; no plugin-specific palette is introduced.
-     * @param {string} state @param {string} title
+     * Mobile-app badge: a solid state-colored ball overlapping the folder
+     * icon. The number is knocked out in the sidebar fill color. A single
+     * session is a plain ball; 2–9 show a digit; 10+ becomes a pill.
+     * @param {string} state
+     * @param {number} count
+     * @param {string} title
+     * @param {boolean} solo
+     * @returns {HTMLSpanElement}
      */
-    function createFolderStatusDot(state, title) {
-      if (state === 'ongoing') {
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        svg.setAttribute('viewBox', '0 0 24 24')
-        svg.setAttribute('width', '14')
-        svg.setAttribute('height', '14')
-        svg.setAttribute('aria-hidden', 'true')
-        svg.setAttribute('data-state', 'ongoing')
-        svg.classList.add('dshia-folder-spinner')
-        const motion = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-        motion.classList.add('dshia-folder-spinner-motion')
-        const track = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        track.setAttribute('cx', '12')
-        track.setAttribute('cy', '12')
-        track.setAttribute('r', '9.5')
-        track.classList.add('dshia-folder-spinner-track')
-        const arc = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-        arc.setAttribute('cx', '12')
-        arc.setAttribute('cy', '12')
-        arc.setAttribute('r', '9.5')
-        arc.classList.add('dshia-folder-spinner-arc')
-        motion.append(track, arc)
-        svg.append(motion)
-        svg.append(document.createElementNS('http://www.w3.org/2000/svg', 'title'))
-        svg.querySelector('title').textContent = title
-        return svg
+    function createFolderBadge(state, count, title, solo = false) {
+      const span = document.createElement('span')
+      span.className = count >= 10
+        ? 'dshia-folder-pill'
+        : `dshia-folder-ball${solo ? ' dshia-folder-ball--solo' : ''}`
+      span.dataset.state = state
+      span.title = title
+      span.setAttribute('aria-hidden', 'true')
+      if (count > 1) span.textContent = String(count)
+      return span
+    }
+
+    /**
+     * Two or more state colors are merged into one capsule so they read as a
+     * single notification badge. Each segment keeps its own native color and
+     * count; with two states this is the requested left/right halved pill.
+     * @param {{state: string, count: number}[]} entries
+     * @param {string} title
+     * @returns {HTMLSpanElement}
+     */
+    function createFolderCapsule(entries, title) {
+      const capsule = document.createElement('span')
+      capsule.className = 'dshia-folder-capsule'
+      capsule.dataset.parts = String(entries.length)
+      capsule.title = title
+      capsule.setAttribute('aria-hidden', 'true')
+      for (const entry of entries) {
+        const part = document.createElement('span')
+        part.className = 'dshia-folder-capsulePart'
+        part.dataset.state = entry.state
+        part.textContent = String(entry.count)
+        part.title = title
+        capsule.appendChild(part)
       }
-      const dot = document.createElement('span')
-      dot.className = 'dshia-folder-dot'
-      dot.dataset.state = state
-      dot.title = title
-      dot.setAttribute('aria-hidden', 'true')
-      return dot
+      return capsule
+    }
+
+    /**
+     * The animated running indicator is a real SVG element because SVG
+     * animations do not run inside a background image.
+     * @returns {HTMLSpanElement}
+     */
+    function createFolderSpinner() {
+      const span = document.createElement('span')
+      span.className = 'dshia-folder-spinner'
+      span.setAttribute('aria-hidden', 'true')
+      span.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" data-state="ongoing"><g class="dshia-folder-spinnerMotion"><circle class="dshia-folder-spinnerTrack" cx="12" cy="12" r="9.5"></circle><circle class="dshia-folder-spinnerArc" cx="12" cy="12" r="9.5"></circle></g></svg>'
+      return span
     }
 
     /**
@@ -1021,33 +1047,45 @@ window.__ModuleLoader__.load({
       }
 
       /**
-       * The sidebar has no folder-header slot, so paint aggregate dots into a
-       * body-level overlay aligned to each collapsed project row. The component
-       * intentionally renders nothing; it observes the sidebar DOM and its own
-       * reading hooks. Collapsed parents include their whole path-derived
-       * subtree, because DSH hides both child groups and their sessions while
-       * the parent is folded.
+       * The sidebar has no folder-header slot. Mount each aggregate directly
+       * in its collapsed workspace row so the browser scrolls and fades it
+       * with the row. The node is absolutely positioned and cannot affect the
+       * scroller's layout; a MutationObserver restores it if React reconciles
+       * the row's children. Collapsed parents include their path-derived
+       * subtree because DSH hides child groups too.
        */
-      function FolderStatusDots({ useWorkspaces, useSessions, useSessionStatus }) {
+      function FolderStatusDots({ useWorkspaces, useSessionStatus }) {
         const workspaceSnapshot = useWorkspaces((snapshot) => snapshot)
-        const sessionSnapshot = useSessions((snapshot) => snapshot)
         const statuses = useSessionStatus((snapshot) => snapshot)
         const items = Array.isArray(workspaceSnapshot)
           ? workspaceSnapshot
           : workspaceSnapshot?.items ?? []
-        const byId = sessionSnapshot?.byId ?? {}
         const dataRef = React.useRef(null)
-        const layerRef = React.useRef(null)
-        dataRef.current = { items, byId, statuses }
+        dataRef.current = { items, statuses }
+        const groupsRef = React.useRef(new Map())
+        const rememberedStatuses = React.useRef(new Map())
+        const frameRef = React.useRef(0)
 
         const decorate = React.useCallback(() => {
+          if (typeof document === 'undefined') return
+
           const data = dataRef.current
-          if (data === null || typeof document === 'undefined' || document.body === null) return
+          // Collapsing a Workspace may briefly drop its rows from the status
+          // snapshot. Remember the last value per Session so its aggregate
+          // survives that transition instead of blinking out.
+          if (data.statuses !== null && typeof data.statuses?.forEach === 'function') {
+            data.statuses.forEach((value, id) => {
+              if (value !== undefined) rememberedStatuses.current.set(id, value)
+            })
+          } else if (data.statuses !== null && typeof data.statuses === 'object') {
+            for (const [id, value] of Object.entries(data.statuses)) {
+              if (value !== undefined) rememberedStatuses.current.set(id, value)
+            }
+          }
           const workspaceById = new Map(
             data.items.map((workspace) => [workspace.workspaceId, workspace]),
           )
           const forest = buildWorkspaceForest(data.items)
-
           const collectSessions = (workspace, output, seen) => {
             if (workspace === undefined) return
             for (const id of workspaceSessionIds(workspace)) {
@@ -1060,139 +1098,205 @@ window.__ModuleLoader__.load({
             }
           }
 
-          let layer = layerRef.current
-          if (layer === null || !layer.isConnected) {
-            layer = document.createElement('div')
-            layer.className = 'dshia-folder-dot-layer'
-            layer.setAttribute('aria-hidden', 'true')
-            document.body.appendChild(layer)
-            layerRef.current = layer
-          }
-
-          // Older builds painted into the React-managed row; remove those nodes
-          // so a reload cannot leave duplicate dots behind.
-          for (const node of document.querySelectorAll('.wnFoaW_projectRow > .dshia-folder-dots')) {
-            node.remove()
-          }
-
-          const existing = new Map()
-          for (const node of layer.children) {
-            if (!node.classList.contains('dshia-folder-dots')) continue
-            const key = node.dataset.workspaceKey
-            if (key !== undefined) existing.set(key, node)
-          }
-          const keep = new Set()
-          let cursor = layer.firstElementChild
-
+          const rows = new Map()
           for (const row of document.querySelectorAll('[data-row-key^="workspace:"]')) {
-            if (row.getAttribute('aria-expanded') !== 'false') continue
             const key = row.getAttribute('data-row-key') ?? ''
-            const workspace = workspaceById.get(key.slice('workspace:'.length))
-            if (workspace === undefined) continue
+            rows.set(key.slice('workspace:'.length), row)
+          }
 
+          const next = new Map()
+          for (const [workspaceId, row] of rows) {
+            const workspace = workspaceById.get(workspaceId)
+            const old = groupsRef.current.get(workspaceId)
+            const oldBadges = old?.badges ?? null
+            const oldSpinner = old?.spinner ?? null
+            if (workspace === undefined || row.getAttribute('aria-expanded') !== 'false') {
+              oldBadges?.remove()
+              oldSpinner?.remove()
+              continue
+            }
             const sessionIds = []
             collectSessions(workspace, sessionIds, new Set())
-            const dots = []
+            const byState = new Map()
+            const titles = []
             for (const id of sessionIds) {
-              const summary = data.byId instanceof Map ? data.byId.get(id) : data.byId?.[id]
-              const state = folderDotState(statusFor(data.statuses, id), summary)
+              const summary = statusFor(data.statuses, id)
+                ?? rememberedStatuses.current.get(id)
+                ?? null
+              const state = folderDotState(summary, null)
               if (state === null) continue
-              dots.push({
-                state,
-                title: summary?.displayTitle ?? summary?.title ?? id,
-              })
+              const entry = byState.get(state) ?? { state, count: 0 }
+              entry.count += 1
+              byState.set(state, entry)
+              const title = summary?.title ?? summary?.name ?? id
+              if (typeof title === 'string' && title.length > 0) titles.push(title)
             }
-            if (dots.length === 0) continue
+            const entries = [...byState.values()]
+            const activeEntries = entries.filter((entry) => entry.state !== 'ongoing')
+            const hasOngoing = entries.some((entry) => entry.state === 'ongoing')
+            const isSoloBadge = !hasOngoing
+              && activeEntries.length === 1
+              && activeEntries[0].count === 1
+            if (activeEntries.length === 0 && !hasOngoing) {
+              oldBadges?.remove()
+              oldSpinner?.remove()
+              continue
+            }
+            const rowRect = row.getBoundingClientRect()
+            if (rowRect.width === 0) {
+              oldBadges?.remove()
+              oldSpinner?.remove()
+              continue
+            }
+            // Inline ownership is deliberate: the aggregate is absolutely
+            // positioned, and DSH may reconcile the row's class/style after
+            // our CSS has loaded. Without a positioned row the badge anchors
+            // to the scroller and can appear hundreds of pixels above its row.
+            row.style.position = 'relative'
 
-            const rect = row.getBoundingClientRect()
-            if (rect.width === 0 || rect.height === 0) continue
-            const title = row.querySelector('.wnFoaW_title')
-            const titleRect = title?.getBoundingClientRect()
-            const folder = row.querySelector('.wnFoaW_folder')
-            const folderRect = folder?.getBoundingClientRect()
-            const signature = dots.map(({ state, title: label }) => `${state}\u0000${label}`).join('\u0001')
-            let group = existing.get(workspace.workspaceId)
-            if (group === undefined) {
-              group = document.createElement('span')
-              group.className = 'dshia-folder-dots dshia-folder-dots-floating'
-              group.setAttribute('aria-hidden', 'true')
-              group.dataset.workspaceKey = workspace.workspaceId
+            const titleNode = row.querySelector('.wnFoaW_title')
+            let projectText = titleNode?.closest?.('.wnFoaW_projectText')
+              ?? titleNode?.parentElement
+              ?? null
+            while (projectText !== null && projectText.parentElement !== row) {
+              projectText = projectText.parentElement
             }
-            group.title = dots.map(({ title: label }) => label).join('\n')
-            if (group.dataset.signature !== signature) {
-              group.replaceChildren(...dots.map(({ state, title: label }) => (
-                createFolderStatusDot(state, label)
-              )))
-              group.dataset.signature = signature
+
+            let badges = oldBadges
+            if (activeEntries.length > 0) {
+              if (badges === null || badges.parentElement !== row) {
+                for (const stale of row.querySelectorAll(':scope > .dshia-folder-badges,:scope > .dshia-folder-dots')) {
+                  stale.remove()
+                }
+                badges = document.createElement('div')
+                badges.className = 'dshia-folder-badges'
+              }
+              const signature = activeEntries.map((entry) => `${entry.state}:${entry.count}`).join('|')
+              if (badges.dataset.signature !== signature) {
+                if (activeEntries.length > 1) {
+                  badges.replaceChildren(createFolderCapsule(activeEntries, titles.join('\n')))
+                } else {
+                  badges.replaceChildren(createFolderBadge(
+                    activeEntries[0].state,
+                    activeEntries[0].count,
+                    titles.join('\n'),
+                    isSoloBadge,
+                  ))
+                }
+                badges.dataset.signature = signature
+              }
+              badges.title = titles.join('\n')
+              if (badges.parentElement !== row) row.appendChild(badges)
+            } else {
+              badges?.remove()
+              badges = null
             }
-            const width = dots.reduce((sum, dot) => sum + (dot.state === 'ongoing' ? 14 : 10), 0)
-              + (dots.length - 1) * 2
-            let anchor = titleRect?.right ?? folderRect?.right ?? rect.left + 20
-            if (title !== null && typeof document.createRange === 'function') {
-              const range = document.createRange()
-              range.selectNodeContents(title)
-              const textRect = range.getBoundingClientRect()
-              if (textRect.width > 0) anchor = textRect.right
+
+            let spinner = oldSpinner
+            if (hasOngoing) {
+              if (spinner === null || spinner.parentElement !== row) {
+                for (const stale of row.querySelectorAll(':scope > .dshia-folder-spinner')) {
+                  stale.remove()
+                }
+                spinner = createFolderSpinner()
+                spinner.title = titles.join('\n')
+              }
+              const anchor = projectText?.nextSibling ?? null
+              if (spinner.parentElement !== row || spinner.previousElementSibling !== projectText) {
+                if (anchor !== null) row.insertBefore(spinner, anchor)
+                else row.appendChild(spinner)
+              }
+            } else {
+              spinner?.remove()
+              spinner = null
             }
-            const left = Math.min(Math.max(rect.left + 8, anchor + 5), rect.right - width - 8)
-            const centerY = rect.top + rect.height / 2 + 1.5
-            group.style.left = `${Math.round(left)}px`
-            group.style.top = `${Math.round(centerY)}px`
-            keep.add(group)
-            if (cursor === group) cursor = cursor.nextElementSibling
-            else layer.insertBefore(group, cursor)
+
+            if (badges !== null) {
+              // Home is a special workspace row and does not always expose the
+              // folder icon as a direct child; fall back to the descendant
+              // icon rather than leaving the badge at its static position.
+              const folder = row.querySelector(':scope > .wnFoaW_folder')
+                ?? row.querySelector('.wnFoaW_folder')
+              const folderRect = folder?.getBoundingClientRect()
+              const firstBadge = badges.firstElementChild
+              const firstRect = firstBadge?.getBoundingClientRect()
+              const badgeWidth = firstRect?.width ?? 14
+              const badgeHeight = firstRect?.height ?? 14
+              const nudge = isSoloBadge ? 2 : 0
+              const anchorLeft = folderRect?.left ?? rowRect.left + 14
+              const anchorTop = folderRect?.top ?? rowRect.top + 4
+              const desiredLeft = anchorLeft - rowRect.left - 4 - badgeWidth / 2 + nudge
+              const maxLeft = rowRect.width - badges.getBoundingClientRect().width - 4
+              badges.style.left = `${Math.max(2, Math.min(desiredLeft, maxLeft))}px`
+              // Put the badge's center just above the folder icon so it
+              // overlaps the icon's top-left corner, not the row center.
+              badges.style.top = `${Math.max(2, anchorTop - rowRect.top + 3 - badgeHeight / 2 + nudge)}px`
+            }
+            next.set(workspaceId, { badges, spinner })
           }
 
-          for (const group of existing.values()) {
-            if (!keep.has(group)) group.remove()
+          for (const [workspaceId, node] of groupsRef.current) {
+            if (!next.has(workspaceId)) {
+              node.badges?.remove()
+              node.spinner?.remove()
+            }
           }
+          groupsRef.current = next
         }, [])
 
-        React.useEffect(() => {
-          decorate()
-        }, [decorate, items, byId, statuses])
+        const schedule = React.useCallback(() => {
+          if (frameRef.current !== 0) return
+          frameRef.current = requestAnimationFrame(() => {
+            frameRef.current = 0
+            decorate()
+          })
+        }, [decorate])
 
         React.useEffect(() => {
-          let frame = 0
-          const schedule = () => {
-            if (frame !== 0) return
-            frame = requestAnimationFrame(() => {
-              frame = 0
-              decorate()
-            })
-          }
-          const layer = layerRef.current
+          schedule()
+        }, [items, statuses, schedule])
+
+        React.useEffect(() => {
+          const host = document.querySelector('.wnFoaW_scrollArea')
+            ?? document.querySelector('[class*="scrollArea"]')
+            ?? document.body
+          window.addEventListener('resize', schedule)
           const observer = new MutationObserver((mutations) => {
-            if (layer !== null && mutations.every((mutation) => (
-              mutation.target === layer || layer.contains(mutation.target)
-            ))) return
-            schedule()
+            for (const mutation of mutations) {
+              const target = mutation.target
+              if (mutation.type === 'attributes'
+                && mutation.attributeName === 'aria-expanded'
+                && target?.getAttribute?.('data-row-key')?.startsWith('workspace:') === true) {
+                schedule()
+                return
+              }
+              const inWorkspaceRow = target?.matches?.('[data-row-key^="workspace:"]') === true
+                || target?.closest?.('[data-row-key^="workspace:"]') != null
+              if (mutation.type === 'childList' && inWorkspaceRow) {
+                schedule()
+                return
+              }
+            }
           })
-          observer.observe(document.body, {
+          observer.observe(host, {
             subtree: true,
             childList: true,
             attributes: true,
-            attributeFilter: ['aria-expanded', 'data-row-key'],
+            attributeFilter: ['aria-expanded'],
           })
-          const onScroll = () => schedule()
-          const onResize = () => schedule()
-          window.addEventListener('scroll', onScroll, true)
-          window.addEventListener('resize', onResize)
           schedule()
-          const settle = window.setTimeout(schedule, 120)
           return () => {
+            window.removeEventListener('resize', schedule)
             observer.disconnect()
-            window.removeEventListener('scroll', onScroll, true)
-            window.removeEventListener('resize', onResize)
-            window.clearTimeout(settle)
-            cancelAnimationFrame(frame)
-            layerRef.current?.remove()
-            layerRef.current = null
-            for (const node of document.querySelectorAll('.wnFoaW_projectRow > .dshia-folder-dots')) {
-              node.remove()
+            cancelAnimationFrame(frameRef.current)
+            frameRef.current = 0
+            for (const group of groupsRef.current.values()) {
+              group.badges?.remove()
+              group.spinner?.remove()
             }
+            groupsRef.current.clear()
           }
-        }, [decorate])
+        }, [schedule])
 
         return null
       }

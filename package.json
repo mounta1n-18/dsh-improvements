@@ -1,6 +1,6 @@
 {
   "name": "dsh-improvements",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "One DeepSeek Harness plugin bundling five focused improvements: destructive-command guard, lazy MCP disclosure, computer-use tools, context usage panel, and session workspace moving.",
   "license": "MIT",

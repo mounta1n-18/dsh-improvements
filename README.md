@@ -18,6 +18,18 @@
 
 每个模块的构造、依赖、改造点与风险，见 `modules/<name>/NOTES.md`。
 
+## 运行条件（条件收敛）
+
+同一个文件夹搬到另一台机器，满足下面的条件就能用；缺哪项只影响对应模块：
+
+- **DSH Desktop 0.2.2-rc.3**：`index-adjust` 硬锁这个版本，不符时只返回 503、不动会话文件。
+- **Windows 10/11**：`computer-use` 依赖 UIA、虚拟桌面和覆盖层，仅 Windows 可用。
+- **Python 3.10+ 与 Pillow**：`computer-use` 的常驻服务；`python -m pip install pillow`。
+- **Chrome**：`browser_use` 的 CDP 平面；没有它桌面操作仍可用。
+
+完整清单与自检命令见 [INSTALL.md](INSTALL.md#01-运行条件条件收敛)。
+
+
 ## 安装
 
 见 [INSTALL.md](INSTALL.md)。最短路径（假设包放在 `C:\DSH Plugin\dsh-improvements`）：

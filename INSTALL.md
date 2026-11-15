@@ -8,6 +8,28 @@
 - Node 由 DSH 自带，不需要另装。
 - 本包**不需要** `npm install`；`dist/client.js` 已随仓库提交。
 
+### 0.1 运行条件（条件收敛）
+
+这个包是**条件收敛**的：把同一个文件夹原样搬到另一台机器，满足下列条件就能工作；缺哪一项，只有对应模块降级，其余模块照常。
+
+| 条件 | 谁需要 | 缺了会怎样 |
+| --- | --- | --- |
+| DSH Desktop **0.2.2-rc.3** | `index-adjust` | 版本锁生效：移库/重连按钮仍在，操作返回 503 并提示版本不支持，**不会动会话文件** |
+| Windows 10/11 x64 | `computer-use` | 该模块的 Python 服务起不来，`computer_use`/`browser_use` 不可用；其余模块不受影响 |
+| Python 3.10+，`py -3` 或 `python` 在 PATH | `computer-use` | 同上 |
+| Python 包 **Pillow** | `computer-use` | 截图/覆盖层失败；装法：`python -m pip install pillow` |
+| Chrome | `computer-use` 的 `browser_use` | 浏览器平面不可用；`computer_use` 的桌面操作仍可用 |
+| PowerShell 7（`pwsh`） | `destructive-guard` | 仍能审 `bash`/`cmd`/`shell`，但审不到 `pwsh` 命令 |
+
+`mcp-lazy`、`context-usage`、`destructive-guard` 没有额外运行时依赖。
+
+自检（不需要启动 DSH）：
+
+```bash
+node scripts/verify.mjs          # 包结构、client 合并、哈希
+python -c "import PIL; print(PIL.__version__)"   # computer-use 的 Python 依赖
+```
+
 ## 0.5 从 GitHub 取包
 
 - 直接下载：<https://github.com/mounta1n-18/dsh-improvements/archive/refs/heads/main.zip>，解压后把目录名 `dsh-improvements-main` 改成 `dsh-improvements`。

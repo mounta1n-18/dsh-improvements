@@ -27,3 +27,10 @@
 ## 验证
 
 工具表出现 `computer_use`；第一次调用会弹授权横幅；`python/cu_server.py` 进程存在且路径指向本模块的 `python/` 目录。
+
+## 2026-11-15 上游更新
+
+- 新增回合守卫：监听 `agent/turn-stopping`，若 cu 仍持有控制权（`control.active` 且 owner 是当前 agent）且没有待送留言，就用 `agent.followup()` 把会话拽回来，提示继续 `hold` 或 `deactivate`；20 秒内最多一次。
+- 新增留言轮询：用 `ctx.get('agents')` 找会话，把服务端留言队列里的用户原话通过 `agent.followup()` 唤醒模型，解决「会话睡着后留言永远收不到」。
+- Python 依赖不变：`ctypes` + `Pillow`；本轮改了 `lib/computer-use.mjs`、`lib/pipe-client.mjs`、`lib/server-manager.mjs`、`python/cu.py`、`cu_server.py`、`dialog_win.py`、`overlay.py` 与两份 SKILL 文档。
+

@@ -173,6 +173,17 @@ for (const [name, mod] of Object.entries(MODULES)) {
     continue
   }
 
+  const identity = upstreamIdentity(sourceDir)
+  const unchanged =
+    previous &&
+    previous.source === sourceDir &&
+    JSON.stringify(previous.upstream || null) === JSON.stringify(identity || null) &&
+    JSON.stringify(previous.files) === JSON.stringify(hashes)
+  if (unchanged) {
+    console.log(`same  ${name}（${files.length} 个文件）`)
+    continue
+  }
+
   mkdirSync(localDir, { recursive: true })
   for (const rel of files) {
     const target = join(localDir, rel)
@@ -186,7 +197,7 @@ for (const [name, mod] of Object.entries(MODULES)) {
       {
         module: name,
         source: sourceDir,
-        upstream: upstreamIdentity(sourceDir),
+        upstream: identity,
         syncedAt: new Date().toISOString(),
         files: hashes,
       },

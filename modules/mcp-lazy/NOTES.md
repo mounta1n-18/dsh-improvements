@@ -29,3 +29,8 @@ MCP 渐进披露。源包：`C:\DSH Plugin\dsh-mcp-lazy`（0.1.0，MIT）。
 ## 验证
 
 设置 → MCP 能看到简介、`46 tools`、`≈12.5k tokens` 和开关；让 agent 调一个未披露的 MCP 工具，应收到「先 load」的提示。
+
+## 2026-11-15 上游更新
+
+- 本轮无变化，仍 0.1.0；`settings.section` 的 `id` 保持上游的 `'mcp'`（base 没有原生 MCP 设置页，不撞车）。
+

@@ -101,8 +101,8 @@ CODES = {
     "CU_CONFIRM_REQUIRED": "这个动作有破坏性，必须显式确认（--confirm / confirm:true）才执行",
     "CU_NOT_ACTIVATED": "电脑控制没有激活：先 activate 并得到用户同意，再操作；不要重试原动作",
     "CU_LEASE_EXPIRED": "控制权已过期（空闲超时或单次上限），重新 activate 再继续",
-    "CU_BUSY": "另一个代理正持有控制权，等它 deactivate 或用急停收回",
-    "CU_EMERGENCY_STOP": "用户按了急停，所有电脑控制被阻断；不要重试或绕过，等用户明确恢复",
+    "CU_BUSY": "另一个代理正持有控制权，等它 deactivate 或由用户手动关闭",
+    "CU_EMERGENCY_STOP": "用户手动关闭了电脑控制；不要重试或绕过，等用户明确恢复",
     "CU_ACTIVATION_DENIED": "用户拒绝了激活请求；不要立刻再弹一次，先问用户想怎么做",
     "CU_PAUSED": "用户按了暂停（Ctrl+Shift+Alt），正在等你回话或自己接手；不要重试，等用户恢复",
     "CU_NO_OVERLAY": "桌面提示层起不来（缺少 tkinter 或桌面不可用），激活被拒绝以防无提示地抢控制权",
@@ -139,17 +139,9 @@ class Control:
         self.idle_ttl = _env_float("DSH_CU_IDLE_TTL", 120.0)
         self.max_ttl = _env_float("DSH_CU_MAX_TTL", 1800.0)
         self.pending = None          # 正在等用户同意的请求（仅服务端用）
-        self.pause_until = 0.0       # 用户刚碰过键鼠：在这之前先不注入
-        self.user_active_at = 0.0    # 最近一次检测到真人输入
         self.paused = False          # 用户按了暂停键：保留租约，但停止一切注入
         self.paused_at = 0.0
-
-    def note_user_input(self, seconds=1.5):
-        """检测到真人动键鼠：让路一小会儿，别和人抢注入。"""
-        now = time.time()
-        with self._lock:
-            self.user_active_at = now
-            self.pause_until = max(self.pause_until, now + seconds)
+        self.visual_check = None     # 服务端注入的可调用对象：提示层是否真的在屏上见
 
     def set_paused(self, on, reason=""):
         """暂停：保留租约（不用重新授权），但注入一律返回 CU_PAUSED。"""
@@ -194,11 +186,10 @@ class Control:
             raise CuError("CU_EMERGENCY_STOP", "")
         if self.paused:
             raise CuError("CU_PAUSED", "")
-        while True:
-            left = self.pause_until - time.time()
-            if left <= 0:
-                break
-            time.sleep(min(left, 0.2))
+        # 只有"提示层确实在屏幕上"时才允许注入。这条是用户要求的硬等价：
+        # 屏幕上没有提示 = 这台电脑此刻不该被 agent 动。
+        if self.visual_check is not None and not self.visual_check():
+            raise CuError("CU_NO_OVERLAY", "")
         with self._lock:
             if self.emergency:
                 raise CuError("CU_EMERGENCY_STOP", "")
@@ -482,6 +473,46 @@ def screen():
     return g(76), g(77), g(78), g(79)
 
 
+def foreground_occludes_overlay():
+    """前台是不是一个"独占全屏"窗口——那种情况下我们的提示层画了也看不见。
+
+    判据（保守，只认最明确的形态）：
+      · 前台窗口不是我们的提示层，也不是桌面/任务栏；
+      · 它的窗口矩形把**它所在那块显示器**整个盖住；
+      · 它没有标题栏（WS_CAPTION）或没有任何非客户区——典型的全屏游戏/播放器。
+
+    命中时上层（cu_server）会当作"视觉不可达"：要么先别注入，要么直接收工，
+    这样"看不到提示层"与"cu 没在工作"始终一致。
+    """
+    hwnd = u32.GetForegroundWindow()
+    if not hwnd:
+        return False
+    buf = ctypes.create_unicode_buffer(128)
+    u32.GetClassNameW(hwnd, buf, 128)
+    cls = buf.value
+    if cls in ("DshCuOverlay", "Progman", "WorkerW", "Shell_TrayWnd",
+               "Windows.UI.Core.CoreWindow"):
+        return False
+    style = u32.GetWindowLongW(hwnd, -16)
+    if style & 0x00C00000:                    # WS_CAPTION：有标题栏，多半是普通窗口
+        return False
+    rect = wintypes.RECT()
+    if not u32.GetWindowRect(hwnd, ctypes.byref(rect)):
+        return False
+    class _MI(ctypes.Structure):
+        _fields_ = [("cbSize", wintypes.DWORD), ("rcMonitor", wintypes.RECT),
+                    ("rcWork", wintypes.RECT), ("dwFlags", wintypes.DWORD)]
+    mi = _MI()
+    mi.cbSize = ctypes.sizeof(_MI)
+    mon = u32.MonitorFromWindow(hwnd, 2)      # MONITOR_DEFAULTTONEAREST
+    if not u32.GetMonitorInfoW(mon, ctypes.byref(mi)):
+        return False
+    m = mi.rcMonitor
+    covers = (rect.left <= m.left and rect.top <= m.top
+              and rect.right >= m.right and rect.bottom >= m.bottom)
+    return bool(covers)
+
+
 def _unit(v, name):
     """归一化坐标校验：0-1000 的有限数。bool 是 int 的子类，必须显式拒绝。"""
     if isinstance(v, bool):
@@ -577,8 +608,8 @@ def click(nx, ny, right=False, double=False, triple=False):
     down, up = (RDOWN, RUP) if right else (LDOWN, LUP)
     n = 3 if triple else (2 if double else 1)
     for i in range(n):
-        _mouse(down)
-        _mouse(up)
+        _mouse_down(down)
+        _mouse_up(down)
         if i < n - 1:
             time.sleep(0.05)
     return x, y
@@ -595,7 +626,7 @@ def drag(nx1, ny1, nx2, ny2, ms=800):
     pause = (ms / 1000.0) / steps
     move(x1, y1)
     time.sleep(0.06)
-    _mouse(LDOWN)
+    _mouse_down(LDOWN)
     try:
         time.sleep(0.06)
         for i in range(1, steps + 1):
@@ -604,8 +635,8 @@ def drag(nx1, ny1, nx2, ny2, ms=800):
         time.sleep(0.08)      # 落点停顿：让目标应用确认悬停到位再松手
     finally:
         # 必须兜底松左键：中途被 Ctrl+C / 超时杀掉时，左键会永久按住在系统层，
-        # 之后所有鼠标动作都变成拖选。
-        _mouse(LUP)
+        # 之后所有鼠标动作都变成拖选。_mouse_up 只松"我们登记过"的键。
+        _mouse_up(LDOWN)
     return (x1, y1, x2, y2)
 
 
@@ -759,32 +790,114 @@ def key_hold(name, down=True):
         _HELD.add(n)
     else:
         _HELD.discard(n)
+    _persist_held()
     return n
 
 
-def release_all(force=False):
-    """松开修饰键。force=True 无条件全松（独立的 release 命令用这个）；
-    默认只松本进程按下过的，免得把用户正按着的键也松开。
+# 鼠标键也登记：拖拽中途被打断时，左键会按在系统层（之后所有鼠标动作都变成拖选）。
+# 但"松手"只松**我们自己按下的**——绝不盲发抬起：孤立的 BUTTONUP 会被 Windows
+# 当成一次完整点击（2026-11-15 事故：用户一动鼠标，桌面就弹一次右键菜单）。
+_BTN_LABEL = {LDOWN: "鼠标左键", RDOWN: "鼠标右键"}
+_BTN_UP = {LDOWN: LUP, RDOWN: RUP}
+_HELD_BTNS = {}          # down 标志 -> 人话名字
 
-    收尾动作**不受控制权闸门约束**：急停/过期之后更要能把手松开。"""
-    names = HOLDABLE if force else tuple(_HELD)
+
+def _held_path():
+    return os.path.join(_home_dir(), "held.json")
+
+
+def _persist_held():
+    """把"按着什么"落到盘上。进程被强杀时 atexit 不会跑，下一个进程靠它收尾。"""
+    state = {"keys": sorted(_HELD), "buttons": sorted(_HELD_BTNS)}
+    p = _held_path()
+    try:
+        if not state["keys"] and not state["buttons"]:
+            if os.path.exists(p):
+                os.remove(p)
+            return
+        tmp = p + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(state, f)
+        os.replace(tmp, p)
+    except OSError:
+        pass
+
+
+def recover_held():
+    """新进程启动时收尾上一个进程的残局。
+
+    只松**记录里写着**的键——那是我们自己按下的；用户手里的键一律不碰。
+    没有记录就什么都不做（绝不猜"可能卡住了"）。"""
+    p = _held_path()
+    if not os.path.exists(p):
+        return []
+    try:
+        with open(p, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    released = []
+    with control_bypass():
+        for flag in state.get("buttons") or []:
+            flag = int(flag)
+            if flag in _BTN_UP:
+                try:
+                    _mouse(_BTN_UP[flag])
+                    released.append(_BTN_LABEL[flag])
+                except OSError:
+                    pass
+        for name in state.get("keys") or []:
+            if name in VK:
+                try:
+                    _key(VK[name], up=True)
+                    released.append(name)
+                except OSError:
+                    pass
+    try:
+        os.remove(p)
+    except OSError:
+        pass
+    return released
+
+
+def _mouse_down(flag):
+    _mouse(flag)
+    _HELD_BTNS[flag] = _BTN_LABEL[flag]
+    _persist_held()
+
+
+def _mouse_up(flag):
+    try:
+        _mouse(_BTN_UP[flag])
+    finally:
+        _HELD_BTNS.pop(flag, None)
+        _persist_held()
+
+
+def release_all():
+    """松开**本进程按下、还没松开**的键和鼠标键。
+
+    语义只有一条：**只碰自己按的**。所以它天然是幂等的——没按过就一个事件都不发，
+    既不会替用户松手，也不会凭空造出一次点击。
+
+    收尾动作不受控制权闸门约束：手动关闭/过期之后更要能把手松开。"""
     done = []
     with control_bypass():
-        for n in names:
+        for flag, label in tuple(_HELD_BTNS.items()):
+            try:
+                _mouse(_BTN_UP[flag])
+                done.append(label)
+            except OSError:
+                pass
+        _HELD_BTNS.clear()
+        for n in tuple(_HELD):
             try:
                 _key(VK[n], up=True)
                 done.append(n)
             except OSError:
                 pass
         _HELD.clear()
-        if force:
-            # drag 被中断会在系统层留下按住的左键，release 一并覆盖鼠标键
-            for f, tag in ((LUP, "鼠标左键"), (RUP, "鼠标右键")):
-                try:
-                    _mouse(f)
-                    done.append(tag)
-                except OSError:
-                    pass
+        _persist_held()
     return done
 
 
@@ -3665,7 +3778,8 @@ def run(a):
         return ["已松开 %s" % key_hold(a.name, False)]
 
     if a.cmd == "release":
-        return ["已松开：%s" % "、".join(release_all(force=True))]
+        done = release_all()
+        return ["已松开：%s" % "、".join(done)] if done else ["没有按住任何键（不需要松开）"]
 
     if a.cmd == "paste":
         old = clip_get_soft()
