@@ -28,6 +28,7 @@
     "index.js",
     "dist/",
     "modules/",
+    "starter/",
     "cordis.patch.yml",
     "icon.svg",
     "README.md",

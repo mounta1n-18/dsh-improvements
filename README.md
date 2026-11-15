@@ -48,6 +48,15 @@
 
 装好后「设置 → 插件」里只多一行 `dsh-improvements`，里面是一个总开关。
 
+## 新手初始化包
+
+`starter/` 是给「刚装好 DSH、还没有自己那套规矩」的人准备的：一份可移植的全局指令模板、一个只读环境采集脚本，以及两份可以直接粘给 agent 的 prompt。
+
+1. [install-prompt.md](starter/install-prompt.md)：装本包并逐项验收；
+2. [init-prompt.md](starter/init-prompt.md)：自检家目录、建工作区、生成属于她自己的 `~/.dsh/AGENTS.md`。
+
+模板里只有规则和占位符，不含任何个人路径、账号或密钥；具体值由初始化流程按那台电脑的实际情况填写。
+
 ## 安全边界（务必读）
 
 - **护栏不是沙箱。** 它只审 `pwsh`/`bash`/`terminal`/`shell`/`cmd` 的 `command`，以及 `write`/`edit`/`apply_patch`/`str_replace_editor` 的目标路径；脚本内容、`run_code`、GUI 打字都不在范围内。
@@ -65,6 +74,7 @@ scripts/build-client.mjs 把各模块 client.js 合成 dist/client.js
 scripts/sync-modules.mjs 从源包同步模块并记哈希
 scripts/verify.mjs       交付前自检
 dist/client.js           合并后的浏览器半身（提交进仓库）
+starter/                 给新机器的初始化包：AGENTS 模板、环境采集、两份 prompt
 ```
 
 ## 开发
